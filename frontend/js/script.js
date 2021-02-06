@@ -2,17 +2,28 @@
 //Déclarations globales 
 var dbGet = new XMLHttpRequest();
 var cameras= [];
-var panier= '';
+const orderMap= new Map;
 const sectionClass = 'products row';
 const articleClass = 'col-12 col-md-6 col-lg-4';
 const productDivClass = 'productDiv d-flex flex-wrap';
 const moreInfoClass = 'col-12 text-right';
 const buyDivClass = 'buyDiv d-flex flex-wrap justify-content-center';
 const buyDivColonClass = 'col-3';
-const orderButtonClass = 'col-12';
+const orderButtonClass = 'firstOrder col-12';
+
+//Classe Panier
+class cart{
+    constructor(orderId, userId, date, orderMap){
+        this.orderId = orderId;
+        this.userId = userId;
+        this.date = date;
+        this.orderMap = orderMap;
+        this.orderSize = this.orderMap.size;
+    }
+}
 
 
-//Objet produit
+//Classe produit
 class product{
     constructor(id, name, price, description, imageURL) {
         this._id = id;
@@ -24,7 +35,7 @@ class product{
     }
 }
 
-//Objet carte
+//Classe carte
 class cardElement{
     constructor(type, attributeMap, content, parentClassName) {
         this.type = type;
@@ -34,20 +45,46 @@ class cardElement{
     }
 }
 
+//objets utilisés pour la construction des cartes
+const shoppingCart = new cart('0', 'invited', '', orderMap);
+const bloc = new cardElement('article', [['class', articleClass]], '', sectionClass);
+const productDiv = new cardElement('div', [['class', productDivClass]], '', articleClass);
+const buyDiv = new cardElement('div', [['class', buyDivClass]], '', articleClass);
+const deleteButton = new cardElement('button', [['class', buyDivColonClass]], 'Delete', buyDivClass);
+const substractButton = new cardElement('button', [['class', buyDivColonClass]], '-', buyDivClass);
+const quantityOrdered = new cardElement('p', [['class', buyDivColonClass]], 'Qty', buyDivClass);
+const addButton = new cardElement('button', [['class', buyDivColonClass]], '+', buyDivClass);
+const orderButton = new cardElement('button', [['class', orderButtonClass]], 'Commander', buyDivClass);
+
+//Ecarte les items spécifiques d'une HTMLCollection
+var HTMLCollectionCleaner = function(value){
+    if(value != 'length' && value != 'item' && value != 'namedItem'){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+//Vérifie si des produits sont présents dans le panier
+var panierFilled = function(){
+    if(shoppingCart.orderMap.size > 0){
+        return true;
+    }else{
+        return false
+    }
+}
+
 //Vérifie si un produit est déjà présent dans le panier
 var checkIfOrdered= function(product){
-    if ((panier) && panier != null){
-        for (let i in panier){
-            if(panier[i]._id == product[i].id){
-                console.log('check true');
-                return true;
-            }else{
-                console.log('check false');
-                return false;
+    if (panierFilled()){
+        retour = false;
+        for (const [key, value] of shoppingCart.orderMap){
+            if(key == product._id){
+                retour = true;
             }
         }
+        return retour;
     }else{
-        console.log('check false');
         return false;
     }
 }
@@ -65,6 +102,27 @@ var alreadyOrdered = function(i){
     blocBuilder(addButton, i); 
 }
 
+
+var listen = function(){
+    const orderButtonsList = document.getElementsByClassName(orderButtonClass);
+    for(let j in orderButtonsList){
+        if(HTMLCollectionCleaner(j)){
+            orderButtonsList[j].addEventListener('click', function(event){
+                let cartMap = shoppingCart.orderMap;
+                if(checkIfOrdered(cameras[j])){
+                    value = cartMap.get(cameras[j]._id);
+                    value++;
+                    cartMap.set(cameras[j]._id, value);
+                }else{
+                    cartMap.set(cameras[j]._id, 1);
+                    blocRemover(orderButton, j);
+                    orderBuilder(j);
+                }
+            });
+        }
+    }
+}
+
 //Génère une série d'objet à partir d'un contenu fourni
 var objectBuilder = function(jsonObject){
     for (let i= 0; i < jsonObject.length; i++ ){
@@ -72,26 +130,7 @@ var objectBuilder = function(jsonObject){
     }
 };
 
-/*Construit le bloc article, 
-    Sélectionne la section parent 'products row' dans lequel l'article sera créé
-    Crée un bloc productDiv contenant un résumé du produit (nom, prix, photo, description) et un lien menant vers la page du produit
-    Crée un bloc de commande qui fera appel à une fonction permettant de commander directement depuis la liste des produits
-*/
-var orderIt = function(){
-
-
-};
-
-
-const bloc = new cardElement('article', [['class', articleClass]], '', sectionClass);
-const productDiv = new cardElement('div', [['class', productDivClass]], '', articleClass);
-const buyDiv = new cardElement('div', [['class', buyDivClass]], '', articleClass);
-const deleteButton = new cardElement('button', [['class', buyDivColonClass]], 'Delete', buyDivClass);
-const substractButton = new cardElement('button', [['class', buyDivColonClass]], '-', buyDivClass);
-const quantityOrdered = new cardElement('p', [['class', buyDivColonClass]], 'Qty', buyDivClass);
-const addButton = new cardElement('button', [['class', buyDivColonClass]], '+', buyDivClass);
-const orderButton = new cardElement('button', ['class', orderButtonClass], 'Commander', buyDivClass);
-
+// crée un élément HTML, ainsi que ses attributs et son contenu
 var blocBuilder = function(object, i){
     const parent = document.getElementsByClassName(object.parentClassName);
     const element = document.createElement(object.type);
@@ -106,6 +145,12 @@ var blocBuilder = function(object, i){
     }
 };
 
+var blocRemover = function(object, i){
+    const parent = document.getElementsByClassName(object.parentClassName);
+    parent[i].removeChild(parent[i].firstChild);
+}
+
+//Implémente les détails de chaque produit dans l'article ainsi qu'un lien vers la page produit
 var contentBuilder = function(product, i){
     for (let property in product){
         switch (property){
@@ -132,14 +177,18 @@ var contentBuilder = function(product, i){
     blocBuilder(moreInfo, i);
 };
 
+//Construit l'interface de commande en fonction du remplissage du panier
 var orderBuilder = function(i){
-    if(checkIfOrdered()){
+    if(checkIfOrdered(cameras[i])){
+        console.log('true');
         alreadyOrdered(i);
     }else{
+        console.log('False');
         notOrdered(i);
     }
 };
 
+//construit le bloc article
 var articleBuilder = function(product, i){
     blocBuilder(bloc, i);
     blocBuilder(productDiv, i);
@@ -148,6 +197,7 @@ var articleBuilder = function(product, i){
     orderBuilder(i);
 };
 
+//récupère les données du serveur
 dbGet.onreadystatechange = function () {
     if(this.readyState == 4 && this.status == 200){
         var response = JSON.parse(this.responseText);
@@ -155,9 +205,11 @@ dbGet.onreadystatechange = function () {
         for (let i in cameras){
             articleBuilder(cameras[i], i);
         }
+        listen();    
     }else{
     }
 };
 
+//requête
 dbGet.open('GET', 'http://localhost:3000/api/cameras');
 dbGet.send();
