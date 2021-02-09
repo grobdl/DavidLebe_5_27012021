@@ -21,7 +21,6 @@ class cart{
         this.userId = userId;
         this.date = date;
         this.orderMap = orderMap;
-        this.orderSize = this.orderMap.size;
     }
 }
 
@@ -136,6 +135,7 @@ var orderRefresher = function(removedButtons, i, orderDiv){
             operateEvent(orderButtonClass, i, orderDiv);
             break;
     }
+    cartUpdater();
 }
 
 var operateEvent = function(operationTypeClass, count, orderDiv){
@@ -198,8 +198,18 @@ var listenOperateButton = function(){
     }
 }
 
-var cartUpdater
-//Génère une série d'objet à partir d'un contenu fourni
+var cartUpdater = function(){
+    const cartDisplay = document.getElementById('cart');
+    var article= '';
+    if(shoppingCart.orderMap.size == 1){
+        article= ' Article';
+    }else{
+        article= ' Articles';
+    }
+    cartDisplay.innerHTML = 'Mon Panier <br />'+ shoppingCart.orderMap.size + article;
+}
+
+    //Génère une série d'objet à partir d'un contenu fourni
 var objectBuilder = function(jsonObject){
     for (let i= 0; i < jsonObject.length; i++ ){
         cameras[i] = new product(jsonObject[i]._id, jsonObject[i].name, jsonObject[i].price, jsonObject[i].description, jsonObject[i].imageUrl);
@@ -279,6 +289,7 @@ dbGet.onreadystatechange = function () {
         for (let i in cameras){
             articleBuilder(cameras[i], i);
         }
+        cartUpdater();
         listenOperateButton();
     }else{
     }
