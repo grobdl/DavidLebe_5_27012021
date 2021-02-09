@@ -8,8 +8,11 @@ const articleClass = 'col-12 col-md-6 col-lg-4';
 const productDivClass = 'productDiv d-flex flex-wrap';
 const moreInfoClass = 'col-12 text-right';
 const buyDivClass = 'buyDiv d-flex flex-wrap justify-content-center';
-const buyDivColonClass = 'col-3';
-const orderButtonClass = 'firstOrder col-12';
+const deleteOrderClass = 'delete col-3';
+const addOrderClass = 'add col-3';
+const substractOrderClass = 'substract col-3';
+const quantityOrderClass = 'quantity col-3';
+const orderButtonClass = 'firstOrder col-12'
 
 //Classe Panier
 class cart{
@@ -50,14 +53,14 @@ const shoppingCart = new cart('0', 'invited', '', orderMap);
 const bloc = new cardElement('article', [['class', articleClass]], '', sectionClass);
 const productDiv = new cardElement('div', [['class', productDivClass]], '', articleClass);
 const buyDiv = new cardElement('div', [['class', buyDivClass]], '', articleClass);
-const deleteButton = new cardElement('button', [['class', buyDivColonClass]], 'Delete', buyDivClass);
-const substractButton = new cardElement('button', [['class', buyDivColonClass]], '-', buyDivClass);
-const quantityOrdered = new cardElement('p', [['class', buyDivColonClass]], 'Qty', buyDivClass);
-const addButton = new cardElement('button', [['class', buyDivColonClass]], '+', buyDivClass);
+const deleteButton = new cardElement('button', [['class', deleteOrderClass]], 'Delete', buyDivClass);
+const substractButton = new cardElement('button', [['class', substractOrderClass]], '-', buyDivClass);
+const quantityOrdered = new cardElement('p', [['class', quantityOrderClass]], 'Qty', buyDivClass);
+const addButton = new cardElement('button', [['class', addOrderClass]], '+', buyDivClass);
 const orderButton = new cardElement('button', [['class', orderButtonClass]], 'Commander', buyDivClass);
 
 //Ecarte les items spécifiques d'une HTMLCollection
-var HTMLCollectionCleaner = function(value){
+var HTMLCollectionCleaner = function(value, parentFunction){
     if(value != 'length' && value != 'item' && value != 'namedItem'){
         return true;
     }else{
@@ -99,30 +102,103 @@ var alreadyOrdered = function(i){
     blocBuilder(deleteButton, i);
     blocBuilder(substractButton, i);
     blocBuilder(quantityOrdered, i);
-    blocBuilder(addButton, i); 
+    blocBuilder(addButton, i);
 }
 
+var alreadyOrderedRemover = function(i){
+    blocRemover(deleteButton, i);
+    blocRemover(substractButton, i);
+    blocRemover(quantityOrdered, i);
+    blocRemover(addButton, i);
+}
 
-var listen = function(){
-    const orderButtonsList = document.getElementsByClassName(orderButtonClass);
-    for(let j in orderButtonsList){
-        if(HTMLCollectionCleaner(j)){
-            orderButtonsList[j].addEventListener('click', function(event){
+var orderRefresher = function(removedButtons, i, orderDiv){
+    switch(removedButtons){
+        case orderButton:
+            blocRemover(removedButtons, i);
+            orderBuilder(i);
+            operateEvent(addOrderClass, i, orderDiv);
+            operateEvent(substractOrderClass, i, orderDiv);
+            operateEvent(deleteOrderClass, i, orderDiv);
+            break;
+
+        case 'alreadyButtons':
+            alreadyOrderedRemover(i);
+            orderBuilder(i);
+            operateEvent(addOrderClass, i, orderDiv);
+            operateEvent(substractOrderClass, i, orderDiv);
+            operateEvent(deleteOrderClass, i, orderDiv);
+            break;
+        
+        case 'deleteCart':
+            alreadyOrderedRemover(i);
+            orderBuilder(i);
+            operateEvent(orderButtonClass, i, orderDiv);
+            break;
+    }
+}
+
+var operateEvent = function(operationTypeClass, count, orderDiv){
+    const operationButton = orderDiv.getElementsByClassName(operationTypeClass);
+    for (let i in operationButton){
+        if(HTMLCollectionCleaner(i) && operationButton[i]){
+            operationButton[i].addEventListener('click', function(){
                 let cartMap = shoppingCart.orderMap;
-                if(checkIfOrdered(cameras[j])){
-                    value = cartMap.get(cameras[j]._id);
-                    value++;
-                    cartMap.set(cameras[j]._id, value);
-                }else{
-                    cartMap.set(cameras[j]._id, 1);
-                    blocRemover(orderButton, j);
-                    orderBuilder(j);
+                value = cartMap.get(cameras[count]._id);
+                switch (operationTypeClass){
+                    case 'firstOrder col-12':
+                        cartMap.set(cameras[count]._id, 1);
+                        quantityOrdered.content= 1;
+                        console.log('quantité: ' + count + ' ' + cartMap.get(cameras[count]._id));
+                        orderRefresher(orderButton, count, orderDiv);
+                        break;
+                    case 'add col-3':
+                        value++;
+                        quantityOrdered.content= value;
+                        cartMap.set(cameras[count]._id, value);
+                        orderRefresher('alreadyButtons', count, orderDiv);
+                        console.log('quantité: ' + count + ' ' + cartMap.get(cameras[count]._id));
+                        break;
+                    case 'substract col-3':
+                        value--;
+                        quantityOrdered.content= value;
+                        if(value == 0){
+                            cartMap.delete(cameras[count]._id);
+                            orderRefresher('deleteCart', count, orderDiv);
+                            console.log('Elément supprimé du panier');
+                        }else{
+                            cartMap.set(cameras[count]._id, value);
+                            orderRefresher('alreadyButtons', count, orderDiv);
+                            console.log('quantité: ' + count + ' ' + cartMap.get(cameras[count]._id));
+                        }
+                        break;
+                    case 'delete col-3':
+                        cartMap.delete(cameras[count]._id);
+                        orderRefresher('deleteCart', count, orderDiv);
+                        console.log('Elément supprimé du panier');
+                        break;
                 }
             });
         }
     }
 }
 
+
+var listenOperateButton = function(){
+    const buyDiv = document.getElementsByClassName(buyDivClass);
+    for(let i in buyDiv){
+        if(HTMLCollectionCleaner(i) && buyDiv[i]){
+            console.log('Boucle n°' + i +'//');
+            console.log(buyDiv[i]);
+            operateEvent(orderButtonClass, i, buyDiv[i]);
+            operateEvent(addOrderClass, i, buyDiv[i]);
+            operateEvent(substractOrderClass, i, buyDiv[i]);
+            operateEvent(deleteOrderClass, i, buyDiv[i]);
+        }
+    }
+}
+
+var cartUpdater
 //Génère une série d'objet à partir d'un contenu fourni
 var objectBuilder = function(jsonObject){
     for (let i= 0; i < jsonObject.length; i++ ){
@@ -180,10 +256,8 @@ var contentBuilder = function(product, i){
 //Construit l'interface de commande en fonction du remplissage du panier
 var orderBuilder = function(i){
     if(checkIfOrdered(cameras[i])){
-        console.log('true');
         alreadyOrdered(i);
     }else{
-        console.log('False');
         notOrdered(i);
     }
 };
@@ -205,7 +279,7 @@ dbGet.onreadystatechange = function () {
         for (let i in cameras){
             articleBuilder(cameras[i], i);
         }
-        listen();    
+        listenOperateButton();
     }else{
     }
 };
