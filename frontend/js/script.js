@@ -1,6 +1,6 @@
-
 //Déclarations globales 
 var dbGet = new XMLHttpRequest();
+var cartSend = new XMLHttpRequest();
 var cameras= [];
 const orderMap= new Map;
 const sectionClass = 'products row';
@@ -48,7 +48,7 @@ class cardElement{
 }
 
 //objets utilisés pour la construction des cartes
-const shoppingCart = new cart('0', 'invited', '', orderMap);
+const shoppingCart = new cart('0', 'invited', Date.now(), orderMap);
 const bloc = new cardElement('article', [['class', articleClass]], '', sectionClass);
 const productDiv = new cardElement('div', [['class', productDivClass]], '', articleClass);
 const buyDiv = new cardElement('div', [['class', buyDivClass]], '', articleClass);
@@ -149,7 +149,6 @@ var operateEvent = function(operationTypeClass, count, orderDiv){
                     case 'firstOrder col-12':
                         cartMap.set(cameras[count]._id, 1);
                         quantityOrdered.content= 1;
-                        console.log('quantité: ' + count + ' ' + cartMap.get(cameras[count]._id));
                         orderRefresher(orderButton, count, orderDiv);
                         break;
                     case 'add col-3':
@@ -157,7 +156,6 @@ var operateEvent = function(operationTypeClass, count, orderDiv){
                         quantityOrdered.content= value;
                         cartMap.set(cameras[count]._id, value);
                         orderRefresher('alreadyButtons', count, orderDiv);
-                        console.log('quantité: ' + count + ' ' + cartMap.get(cameras[count]._id));
                         break;
                     case 'substract col-3':
                         value--;
@@ -165,17 +163,14 @@ var operateEvent = function(operationTypeClass, count, orderDiv){
                         if(value == 0){
                             cartMap.delete(cameras[count]._id);
                             orderRefresher('deleteCart', count, orderDiv);
-                            console.log('Elément supprimé du panier');
                         }else{
                             cartMap.set(cameras[count]._id, value);
                             orderRefresher('alreadyButtons', count, orderDiv);
-                            console.log('quantité: ' + count + ' ' + cartMap.get(cameras[count]._id));
                         }
                         break;
                     case 'delete col-3':
                         cartMap.delete(cameras[count]._id);
                         orderRefresher('deleteCart', count, orderDiv);
-                        console.log('Elément supprimé du panier');
                         break;
                 }
             });
@@ -188,8 +183,6 @@ var listenOperateButton = function(){
     const buyDiv = document.getElementsByClassName(buyDivClass);
     for(let i in buyDiv){
         if(HTMLCollectionCleaner(i) && buyDiv[i]){
-            console.log('Boucle n°' + i +'//');
-            console.log(buyDiv[i]);
             operateEvent(orderButtonClass, i, buyDiv[i]);
             operateEvent(addOrderClass, i, buyDiv[i]);
             operateEvent(substractOrderClass, i, buyDiv[i]);
@@ -199,7 +192,7 @@ var listenOperateButton = function(){
 }
 
 var cartUpdater = function(){
-    const cartDisplay = document.getElementById('cart');
+    const cartDisplay = document.getElementById('cartLink');
     var article= '';
     if(shoppingCart.orderMap.size == 1){
         article= ' Article';
@@ -281,6 +274,20 @@ var articleBuilder = function(product, i){
     orderBuilder(i);
 };
 
+var shoppingCartURL = function(){
+    const cartLink = document.getElementById('cartLink');
+    console.log(cartLink);
+    cartLink.addEventListener('click', function(){
+        console.log('clic shoppingCartURL ok');
+        console.log(shoppingCart);
+        console.log('entries');
+        shoppingCart.orderMap = Array.from(shoppingCart.orderMap);
+        console.log(shoppingCart.orderMap);
+        const cartString = JSON.stringify(shoppingCart);
+        window.location.href = 'shoppingcart.html?' + 'pouet';
+    });
+}
+
 //récupère les données du serveur
 dbGet.onreadystatechange = function () {
     if(this.readyState == 4 && this.status == 200){
@@ -291,10 +298,11 @@ dbGet.onreadystatechange = function () {
         }
         cartUpdater();
         listenOperateButton();
+        shoppingCartURL();
     }else{
     }
 };
 
-//requête
+//requête récupération
 dbGet.open('GET', 'http://localhost:3000/api/cameras');
 dbGet.send();
