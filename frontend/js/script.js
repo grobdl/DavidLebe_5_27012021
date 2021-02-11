@@ -3,6 +3,7 @@ var dbGet = new XMLHttpRequest();
 var cartSend = new XMLHttpRequest();
 var cameras= [];
 const orderMap= new Map;
+const pageCheck = 'main';
 const sectionClass = 'products row';
 const articleClass = 'col-12 col-md-6 col-lg-4';
 const productDivClass = 'productDiv d-flex flex-wrap';
@@ -193,13 +194,16 @@ var listenOperateButton = function(){
 
 var cartUpdater = function(){
     const cartDisplay = document.getElementById('cartLink');
-    var article= '';
-    if(shoppingCart.orderMap.size == 1){
-        article= ' Article';
-    }else{
-        article= ' Articles';
+    switch(shoppingCart.orderMap.size){
+        case 0:
+            cartDisplay.innerHTML = 'Panier Vide';
+            break;
+        case 1: 
+            cartDisplay.innerHTML = 'Mon Panier <br />1 article';
+            break;
+        default:
+            cartDisplay.innerHTML = 'Mon Panier <br />' + shoppingCart.orderMap.size + 'Articles';
     }
-    cartDisplay.innerHTML = 'Mon Panier <br />'+ shoppingCart.orderMap.size + article;
 }
 
     //Génère une série d'objet à partir d'un contenu fourni
@@ -276,15 +280,14 @@ var articleBuilder = function(product, i){
 
 var shoppingCartURL = function(){
     const cartLink = document.getElementById('cartLink');
-    console.log(cartLink);
-    cartLink.addEventListener('click', function(){
-        console.log('clic shoppingCartURL ok');
-        console.log(shoppingCart);
-        console.log('entries');
-        shoppingCart.orderMap = Array.from(shoppingCart.orderMap);
-        console.log(shoppingCart.orderMap);
-        const cartString = JSON.stringify(shoppingCart);
-        window.location.href = 'shoppingcart.html?' + 'pouet';
+    cartLink.addEventListener('click', function(event){
+        if(shoppingCart.orderMap.size == 0){
+            event.preventDefault();
+        }else{
+            shoppingCart.orderMap = Array.from(shoppingCart.orderMap);
+            const cartString = JSON.stringify(shoppingCart);
+            localStorage.setItem('cart', cartString);
+        }
     });
 }
 
@@ -303,6 +306,27 @@ dbGet.onreadystatechange = function () {
     }
 };
 
-//requête récupération
-dbGet.open('GET', 'http://localhost:3000/api/cameras');
-dbGet.send();
+ 
+
+var mainId = document.getElementsByTagName(pageCheck);
+const idValue = mainId[0].getAttribute('id');
+switch(idValue){
+    case 'index':
+    //requête récupération
+    dbGet.open('GET', 'http://localhost:3000/api/cameras');
+    dbGet.send();
+    break;
+
+    case 'shoppingCart':
+        console.log(localStorage.getItem('cart'));
+        cartParse = JSON.parse(localStorage.getItem('cart'));
+        console.log(cartParse.orderMap);
+    break;
+
+    case 'product':
+    break;
+
+    default:
+        console.log('Erreur: ' + mainId[0]);
+}
+
