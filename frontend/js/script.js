@@ -39,7 +39,8 @@ class pageBuilder{
 }
 
 //Déclarations globales 
-var dbGet = new XMLHttpRequest();
+var dbGetList = new XMLHttpRequest();
+var dbGetId = new XMLHttpRequest();
 var cartSend = new XMLHttpRequest();
 var cameras= [];
 const pageCheck = 'main';
@@ -47,16 +48,58 @@ var mainId = document.getElementsByTagName(pageCheck);
 const idValue = mainId[0].getAttribute('id');
 const orderMap= new Map;
 const sectionClass = idValue + ' row';
-const articleClassMap = new pageBuilder('col-12 col-md-6 col-lg-4', 'col-12 col-md-6 col-lg-4', 'col-12 col-md-6 col-lg-4');
-const articleClass = 'col-12 col-md-6 col-lg-4';
-const productDivClass = 'productDiv d-flex flex-wrap';
-const moreInfoClass = 'col-12 text-right';
-const buyDivClass = 'buyDiv d-flex flex-wrap justify-content-center';
-const deleteOrderClass = 'delete col-3';
-const addOrderClass = 'add col-3';
-const substractOrderClass = 'substract col-3';
-const quantityOrderClass = 'quantity col-3';
-const orderButtonClass = 'firstOrder col-12';
+var articleClass = '';
+var productDivClass = '';
+var moreInfoClass = '';
+var productNameClass = '';
+var productPriceClass = '';
+var productImageClass = '';
+var productDescriptionClass = '';
+var buyDivClass = '';
+var deleteOrderClass = '';
+var addOrderClass = '';
+var substractOrderClass = '';
+var quantityOrderClass = '';
+var orderButtonClass = '';
+switch(idValue){
+    case 'index':
+        articleClass = 'col-12 col-md-6 col-lg-4';
+        productDivClass = 'productDiv d-flex flex-wrap';
+        moreInfoClass = 'col-12 text-right';
+        buyDivClass = 'buyDiv d-flex flex-wrap justify-content-center';
+        deleteOrderClass = 'delete col-3';
+        addOrderClass = 'add col-3';
+        substractOrderClass = 'substract col-3';
+        quantityOrderClass = 'quantity col-3';
+        orderButtonClass = 'firstOrder col-12';
+        productNameClass = 'col-8';
+        productPriceClass = 'col-4';
+        productImageClass = 'img-thumbnail';
+        productDescriptionClass = '';
+    break;
+
+    case 'shoppingCart':
+        articleClass = 'col-12 d-flex flex-wrap';
+        productDivClass = 'productDiv d-flex flex-wrap flex-column';
+        moreInfoClass = 'd-none';
+        buyDivClass = 'buyDiv d-flex flex-wrap justify-content-center';
+        deleteOrderClass = 'delete col-2';
+        addOrderClass = 'add col-2';
+        substractOrderClass = 'substract col-2';
+        quantityOrderClass = 'quantity col-2';
+        orderButtonClass = 'firstOrder col-12';
+        productNameClass = 'col-4';
+        productPriceClass = 'col-4';
+        productImageClass = 'col-2';
+        productDescriptionClass = 'd-none';
+    break;
+
+    case 'product':
+    break;
+
+    default:
+        console.log('pouet');
+}
 
 
 const shoppingCart = new cart();
@@ -80,6 +123,17 @@ const substractButton = new cardElement('button', [['class', substractOrderClass
 const quantityOrdered = new cardElement('p', [['class', quantityOrderClass]], 'Qty', buyDivClass);
 const addButton = new cardElement('button', [['class', addOrderClass]], '+', buyDivClass);
 const orderButton = new cardElement('button', [['class', orderButtonClass]], 'Commander', buyDivClass);
+
+//
+var shoppingCartChecker = function(product){
+    var check = false;
+    for(const [key, value] of shoppingCart.orderMap){
+        if(product._id == key && value > 0){
+            check= true;
+        }
+    }
+    return check;
+}
 
 //Ecarte les items spécifiques d'une HTMLCollection
 var HTMLCollectionCleaner = function(value, parentFunction){
@@ -216,19 +270,19 @@ var contentBuilder = function(product, i){
     for (let property in product){
         switch (property){
             case 'name':
-                const productName = new cardElement('h3', [['class', 'col-8']], product[property], productDivClass);
+                const productName = new cardElement('h3', [['class', productNameClass]], product[property], productDivClass);
                 blocBuilder(productName, i);
                 break;
             case 'price':
-                const productPrice = new cardElement('p', [['class', 'col-4 text-right']], product[property] + ' €', productDivClass);
+                const productPrice = new cardElement('p', [['class', productPriceClass]], product[property] + ' €', productDivClass);
                 blocBuilder(productPrice, i);
                 break;
             case 'description':
-                const productDescription = new cardElement('p', [], product[property], productDivClass);
+                const productDescription = new cardElement('p', [['class', productDescriptionClass]], product[property], productDivClass);
                 blocBuilder(productDescription, i);
                 break;
             case 'imageURL':
-                const productImage = new cardElement('img', [['class', 'img-thumbnail'], ['src', product[property]]], '', productDivClass);
+                const productImage = new cardElement('img', [['class', productImageClass], ['src', product[property]]], '', productDivClass);
                 blocBuilder(productImage, i);
                 break;
             default:
@@ -359,12 +413,14 @@ var shoppingCartURL = function(){
 
 
 //récupère les données du serveur
-dbGet.onreadystatechange = function () {
+dbGetList.onreadystatechange = function () {
     if(this.readyState == 4 && this.status == 200){
         var response = JSON.parse(this.responseText);
         objectBuilder(response);
         for (let i in cameras){
-            articleBuilder(cameras[i], i, idValue);
+            if(idValue == 'index' || (idValue == 'shoppingCart' && shoppingCartChecker(cameras[i]))){
+                articleBuilder(cameras[i], i, idValue);
+            }
         }
         cartUpdater();
         listenOperateButton();
@@ -373,19 +429,32 @@ dbGet.onreadystatechange = function () {
     }
 };
 
+dbGetId.onreadystatechange = function () {
+    if(this.readyState == 4 && this.status == 200){
+        var response = JSON.parse(this.responseText);
+        objectBuilder(response);
+        console.log('Requête lancée');
+        console.log(response);
+    }else{
+    }
+};
+
 switch(idValue){
     case 'index':
     //requête récupération
-    dbGet.open('GET', 'http://localhost:3000/api/cameras');
-    dbGet.send();
+    dbGetList.open('GET', 'http://localhost:3000/api/cameras');
+    dbGetList.send();
     break;
 
     case 'shoppingCart':
-    dbGet.open('GET', 'http://localhost:3000/api/cameras');
-    dbGet.send();
+    dbGetList.open('GET', 'http://localhost:3000/api/cameras');
+    dbGetList.send();
     break;
 
     case 'product':
+        console.log('product');
+        dbGetId.open('GET', 'http://localhost:3000/api/cameras');
+        dbGetId.send();
     break;
 
     default:
