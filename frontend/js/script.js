@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //Classe carte
 class cardElement{
     constructor(type, attributeMap, content, parentClassName) {
@@ -7,6 +8,24 @@ class cardElement{
         this.parentClassName = parentClassName;
     }
 }
+=======
+//Déclarations globales 
+var dbGet = new XMLHttpRequest();
+var cartSend = new XMLHttpRequest();
+var cameras= [];
+const orderMap= new Map;
+const pageCheck = 'main';
+const sectionClass = 'products row';
+const articleClass = 'col-12 col-md-6 col-lg-4';
+const productDivClass = 'productDiv d-flex flex-wrap';
+const moreInfoClass = 'col-12 text-right';
+const buyDivClass = 'buyDiv d-flex flex-wrap justify-content-center';
+const deleteOrderClass = 'delete col-3';
+const addOrderClass = 'add col-3';
+const substractOrderClass = 'substract col-3';
+const quantityOrderClass = 'quantity col-3';
+const orderButtonClass = 'firstOrder col-12'
+>>>>>>> d196ace2581fa0808ba92c5f553667ca577647a6
 
 //Classe Panier
 class cart{
@@ -104,6 +123,7 @@ switch(idValue){
 
 const shoppingCart = new cart();
 //objets utilisés pour la construction des cartes
+<<<<<<< HEAD
 if(localStorage.getItem('cart')){
     const parse = JSON.parse(localStorage.getItem('cart'));
     shoppingCart.orderMap = new Map(parse.orderMap);
@@ -115,6 +135,9 @@ if(localStorage.getItem('cart')){
 }
 
 //constantes index
+=======
+const shoppingCart = new cart('0', 'invited', Date.now(), orderMap);
+>>>>>>> d196ace2581fa0808ba92c5f553667ca577647a6
 const bloc = new cardElement('article', [['class', articleClass]], '', sectionClass);
 const productDiv = new cardElement('div', [['class', productDivClass]], '', articleClass);
 const buyDiv = new cardElement('div', [['class', buyDivClass]], '', articleClass);
@@ -234,7 +257,78 @@ var orderRefresher = function(removedButtons, i, orderDiv){
     cartUpdater();
 }
 
+<<<<<<< HEAD
 //Génère une série d'objet à partir d'un contenu fourni
+=======
+var operateEvent = function(operationTypeClass, count, orderDiv){
+    const operationButton = orderDiv.getElementsByClassName(operationTypeClass);
+    for (let i in operationButton){
+        if(HTMLCollectionCleaner(i) && operationButton[i]){
+            operationButton[i].addEventListener('click', function(){
+                let cartMap = shoppingCart.orderMap;
+                value = cartMap.get(cameras[count]._id);
+                switch (operationTypeClass){
+                    case 'firstOrder col-12':
+                        cartMap.set(cameras[count]._id, 1);
+                        quantityOrdered.content= 1;
+                        orderRefresher(orderButton, count, orderDiv);
+                        break;
+                    case 'add col-3':
+                        value++;
+                        quantityOrdered.content= value;
+                        cartMap.set(cameras[count]._id, value);
+                        orderRefresher('alreadyButtons', count, orderDiv);
+                        break;
+                    case 'substract col-3':
+                        value--;
+                        quantityOrdered.content= value;
+                        if(value == 0){
+                            cartMap.delete(cameras[count]._id);
+                            orderRefresher('deleteCart', count, orderDiv);
+                        }else{
+                            cartMap.set(cameras[count]._id, value);
+                            orderRefresher('alreadyButtons', count, orderDiv);
+                        }
+                        break;
+                    case 'delete col-3':
+                        cartMap.delete(cameras[count]._id);
+                        orderRefresher('deleteCart', count, orderDiv);
+                        break;
+                }
+            });
+        }
+    }
+}
+
+
+var listenOperateButton = function(){
+    const buyDiv = document.getElementsByClassName(buyDivClass);
+    for(let i in buyDiv){
+        if(HTMLCollectionCleaner(i) && buyDiv[i]){
+            operateEvent(orderButtonClass, i, buyDiv[i]);
+            operateEvent(addOrderClass, i, buyDiv[i]);
+            operateEvent(substractOrderClass, i, buyDiv[i]);
+            operateEvent(deleteOrderClass, i, buyDiv[i]);
+        }
+    }
+}
+
+var cartUpdater = function(){
+    const cartDisplay = document.getElementById('cartLink');
+    switch(shoppingCart.orderMap.size){
+        case 0:
+            cartDisplay.innerHTML = 'Panier Vide';
+            break;
+        case 1: 
+            cartDisplay.innerHTML = 'Mon Panier <br />1 article';
+            break;
+        default:
+            cartDisplay.innerHTML = 'Mon Panier <br />' + shoppingCart.orderMap.size + 'Articles';
+    }
+}
+
+    //Génère une série d'objet à partir d'un contenu fourni
+>>>>>>> d196ace2581fa0808ba92c5f553667ca577647a6
 var objectBuilder = function(jsonObject){
     for (let i= 0; i < jsonObject.length; i++ ){
         cameras[i] = new product(jsonObject[i]._id, jsonObject[i].name, jsonObject[i].price, jsonObject[i].description, jsonObject[i].imageUrl);
@@ -310,6 +404,7 @@ var articleBuilder = function(product, i, page){
     orderBuilder(i);
 };
 
+<<<<<<< HEAD
 var operateEvent = function(operationTypeClass, count, orderDiv){
     const operationButton = orderDiv.getElementsByClassName(operationTypeClass);
     for (let i in operationButton){
@@ -400,18 +495,29 @@ var cartUpdater = function(){
 }
 
 
+=======
+>>>>>>> d196ace2581fa0808ba92c5f553667ca577647a6
 var shoppingCartURL = function(){
     const cartLink = document.getElementById('cartLink');
     cartLink.addEventListener('click', function(event){
         if(shoppingCart.orderMap.size == 0){
             event.preventDefault();
         }else{
+<<<<<<< HEAD
             localStorageUpdate();
+=======
+            shoppingCart.orderMap = Array.from(shoppingCart.orderMap);
+            const cartString = JSON.stringify(shoppingCart);
+            localStorage.setItem('cart', cartString);
+>>>>>>> d196ace2581fa0808ba92c5f553667ca577647a6
         }
     });
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> d196ace2581fa0808ba92c5f553667ca577647a6
 //récupère les données du serveur
 dbGetList.onreadystatechange = function () {
     if(this.readyState == 4 && this.status == 200){
@@ -429,6 +535,7 @@ dbGetList.onreadystatechange = function () {
     }
 };
 
+<<<<<<< HEAD
 dbGetId.onreadystatechange = function () {
     if(this.readyState == 4 && this.status == 200){
         var response = JSON.parse(this.responseText);
@@ -455,6 +562,26 @@ switch(idValue){
         console.log('product');
         dbGetId.open('GET', 'http://localhost:3000/api/cameras');
         dbGetId.send();
+=======
+ 
+
+var mainId = document.getElementsByTagName(pageCheck);
+const idValue = mainId[0].getAttribute('id');
+switch(idValue){
+    case 'index':
+    //requête récupération
+    dbGet.open('GET', 'http://localhost:3000/api/cameras');
+    dbGet.send();
+    break;
+
+    case 'shoppingCart':
+        console.log(localStorage.getItem('cart'));
+        cartParse = JSON.parse(localStorage.getItem('cart'));
+        console.log(cartParse.orderMap);
+    break;
+
+    case 'product':
+>>>>>>> d196ace2581fa0808ba92c5f553667ca577647a6
     break;
 
     default:
