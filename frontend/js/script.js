@@ -65,7 +65,7 @@ switch(idValue){
     case 'index':
         articleClass = 'col-12 col-md-6 col-lg-4';
         productDivClass = 'productDiv d-flex flex-wrap';
-        moreInfoClass = 'col-12 text-right';
+        moreInfoClass = 'moreInfo col-12 text-right';
         buyDivClass = 'buyDiv d-flex flex-wrap justify-content-center';
         deleteOrderClass = 'delete col-3';
         addOrderClass = 'add col-3';
@@ -95,6 +95,19 @@ switch(idValue){
     break;
 
     case 'product':
+        articleClass = 'col-12 col-md-6 col-lg-4';
+        productDivClass = 'productDiv d-flex flex-wrap';
+        moreInfoClass = 'd-none';
+        buyDivClass = 'buyDiv d-flex flex-wrap justify-content-center';
+        deleteOrderClass = 'delete col-3';
+        addOrderClass = 'add col-3';
+        substractOrderClass = 'substract col-3';
+        quantityOrderClass = 'quantity col-3';
+        orderButtonClass = 'firstOrder col-12';
+        productNameClass = 'col-8';
+        productPriceClass = 'col-4';
+        productImageClass = 'img-thumbnail';
+        productDescriptionClass = '';
     break;
 
     default:
@@ -123,6 +136,7 @@ const substractButton = new cardElement('button', [['class', substractOrderClass
 const quantityOrdered = new cardElement('p', [['class', quantityOrderClass]], 'Qty', buyDivClass);
 const addButton = new cardElement('button', [['class', addOrderClass]], '+', buyDivClass);
 const orderButton = new cardElement('button', [['class', orderButtonClass]], 'Commander', buyDivClass);
+
 
 //
 var shoppingCartChecker = function(product){
@@ -287,8 +301,9 @@ var contentBuilder = function(product, i){
                 break;
             default:
         }
-    }
-    const moreInfo = new cardElement('a', [['class', moreInfoClass], ['href', 'produit.html']], 'Plus de détails', productDivClass);
+    }    
+    const urlData = 'produit.html?_id=' + cameras[i]._id;
+    const moreInfo = new cardElement('a', [['class', moreInfoClass], ['href', urlData]], 'Plus de détails', productDivClass);
     blocBuilder(moreInfo, i);
 };
 
@@ -308,6 +323,8 @@ var articleBuilder = function(product, i, page){
     contentBuilder(cameras[i], i);
     blocBuilder(buyDiv, i);
     orderBuilder(i);
+    console.log('articleBuilder' + i);
+    console.log(cameras[i]._id);
 };
 
 var operateEvent = function(operationTypeClass, count, orderDiv){
@@ -322,12 +339,14 @@ var operateEvent = function(operationTypeClass, count, orderDiv){
                         cartMap.set(cameras[count]._id, 1);
                         quantityOrdered.content= 1;
                         orderRefresher(orderButton, count, orderDiv);
+                        console.log(cameras[count]._id);
                         break;
                     case 'add col-3':
                         value++;
                         quantityOrdered.content= value;
                         cartMap.set(cameras[count]._id, value);
                         orderRefresher('alreadyButtons', count, orderDiv);
+                        console.log(cameras[count]._id);
                         break;
                     case 'substract col-3':
                         value--;
@@ -335,14 +354,17 @@ var operateEvent = function(operationTypeClass, count, orderDiv){
                         if(value == 0){
                             cartMap.delete(cameras[count]._id);
                             orderRefresher('deleteCart', count, orderDiv);
+                            console.log(cameras[count]._id);
                         }else{
                             cartMap.set(cameras[count]._id, value);
                             orderRefresher('alreadyButtons', count, orderDiv);
+                            console.log(cameras[count]._id);
                         }
                         break;
                     case 'delete col-3':
                         cartMap.delete(cameras[count]._id);
                         orderRefresher('deleteCart', count, orderDiv);
+                        console.log(cameras[count]._id);
                         break;
                 }
             });
@@ -354,6 +376,7 @@ var operateEvent = function(operationTypeClass, count, orderDiv){
 var listenOperateButton = function(){
     const buyDiv = document.getElementsByClassName(buyDivClass);
     for(let i in buyDiv){
+        console.log(i);
         if(HTMLCollectionCleaner(i) && buyDiv[i]){
             operateEvent(orderButtonClass, i, buyDiv[i]);
             operateEvent(addOrderClass, i, buyDiv[i]);
@@ -370,12 +393,12 @@ var localStorageUpdate = function(){
     localStorage.setItem('cart', cartString);
 }
 
-var cartRecreator = function(){
+/*var cartRecreator = function(){
     const parse = JSON.parse(localStorage.getItem('cart'));
     shoppingCart.orderMap = new Map(parse.orderMap);
     console.log(shoppingCart.orderMap);
     return shoppingCart;
-}
+}*/
 
 var cartUpdater = function(){
     const cartDisplay = document.getElementById('cartLink');
@@ -384,6 +407,7 @@ var cartUpdater = function(){
             case 0:
                 console.log('Map vide');
                 cartDisplay.innerHTML = 'Panier Vide';
+                localStorageUpdate();
                 break;
             case 1: 
                 cartDisplay.innerHTML = 'Mon Panier <br />1 article';
@@ -399,11 +423,10 @@ var cartUpdater = function(){
     }
 }
 
-
 var shoppingCartURL = function(){
     const cartLink = document.getElementById('cartLink');
     cartLink.addEventListener('click', function(event){
-        if(shoppingCart.orderMap.size == 0){
+        if(shoppingCart.orderMap.size == 0 || window.location.href == 'http://127.0.0.1:5500/oc_p5_projet/frontend/shoppingcart.html'){
             event.preventDefault();
         }else{
             localStorageUpdate();
@@ -411,6 +434,11 @@ var shoppingCartURL = function(){
     });
 }
 
+var URLParam = function(){
+    const URLParam = new URLSearchParams(window.location.search);
+    const paramValue = URLParam.get('_id');
+    return paramValue;
+}
 
 //récupère les données du serveur
 dbGetList.onreadystatechange = function () {
@@ -433,8 +461,18 @@ dbGetId.onreadystatechange = function () {
     if(this.readyState == 4 && this.status == 200){
         var response = JSON.parse(this.responseText);
         objectBuilder(response);
-        console.log('Requête lancée');
-        console.log(response);
+        const productId = URLParam();
+        console.log(productId);
+        for (let i in cameras){
+            if(idValue == 'product' && cameras[i]._id == productId){
+                articleBuilder(cameras[i], i, idValue);
+                console.log('dbGet' + i);
+                console.log(cameras[i]._id);
+            }
+        }
+        cartUpdater();
+        listenOperateButton();
+        shoppingCartURL();
     }else{
     }
 };
@@ -452,10 +490,9 @@ switch(idValue){
     break;
 
     case 'product':
-        console.log('product');
         dbGetId.open('GET', 'http://localhost:3000/api/cameras');
         dbGetId.send();
-    break;
+    break
 
     default:
         console.log('Erreur: ' + mainId[0]);
