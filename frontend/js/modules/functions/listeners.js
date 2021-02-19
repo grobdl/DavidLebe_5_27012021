@@ -1,43 +1,49 @@
 var operateEvent = function(operationTypeClass, count, orderDiv){
     const operationButton = orderDiv.getElementsByClassName(operationTypeClass);
+    const articles = document.getElementsByTagName('article');
+    const articleId = articles[count].getAttribute('id');
     for (let i in operationButton){
         if(HTMLCollectionCleaner(i) && operationButton[i]){
             operationButton[i].addEventListener('click', function(){
                 let cartMap = shoppingCart.orderMap;
-                value = cartMap.get(cameras[count]._id);
+                value = cartMap.get(articleId);
                 switch (operationTypeClass){
                     case 'firstOrder col-12':
-                        cartMap.set(cameras[count]._id, 1);
+                        cartMap.set(articleId, 1);
                         quantityOrdered.content= 1;
                         orderRefresher(orderButton, count, orderDiv);
+                        console.log('quantityOrdered: ' + quantityOrdered.content);
                         break;
                     case 'add col-3':
                         value++;
                         quantityOrdered.content= value;
-                        cartMap.set(cameras[count]._id, value);
+                        cartMap.set(articleId, value);
                         orderRefresher('alreadyButtons', count, orderDiv);
+                        console.log('quantityOrdered: ' + quantityOrdered.content);
                         break;
                     case 'substract col-3':
                         value--;
                         quantityOrdered.content= value;
                         if(value == 0){
-                            cartMap.delete(cameras[count]._id);
+                            cartMap.delete(articleId);
                             orderRefresher('deleteCart', count, orderDiv);
+                            console.log('quantityOrdered: ' + quantityOrdered.content);
                         }else{
-                            cartMap.set(cameras[count]._id, value);
+                            cartMap.set(articleId, value);
                             orderRefresher('alreadyButtons', count, orderDiv);
+                            console.log('quantityOrdered: ' + quantityOrdered.content);
                         }
                         break;
                     case 'delete col-3':
-                        cartMap.delete(cameras[count]._id);
+                        cartMap.delete(articleId);
                         orderRefresher('deleteCart', count, orderDiv);
+                        console.log('quantityOrdered: ' + quantityOrdered.content);
                         break;
                 }
             });
         }
     }
 }
-
 
 var listenOperateButton = function(){
     const buyDiv = document.getElementsByClassName(buyDivClass);
@@ -51,53 +57,13 @@ var listenOperateButton = function(){
     }
 }
 
-var cartUpdater = function(){
-    const cartDisplay = document.getElementById('cartLink');
-    switch(shoppingCart.orderMap.size){
-        case 0:
-            cartDisplay.innerHTML = 'Panier Vide';
-            break;
-        case 1: 
-            cartDisplay.innerHTML = 'Mon Panier <br />1 article';
-            break;
-        default:
-            cartDisplay.innerHTML = 'Mon Panier <br />' + shoppingCart.orderMap.size + 'Articles';
-    }
-}
-
-
 var shoppingCartURL = function(){
     const cartLink = document.getElementById('cartLink');
     cartLink.addEventListener('click', function(event){
-        if(shoppingCart.orderMap.size == 0){
+        if(shoppingCart.orderMap.size == 0 || window.location.href == 'http://127.0.0.1:5500/oc_p5_projet/frontend/shoppingcart.html'){
             event.preventDefault();
         }else{
-            shoppingCart.orderMap = Array.from(shoppingCart.orderMap);
-            const cartString = JSON.stringify(shoppingCart);
-            localStorage.setItem('cart', cartString);
+            localStorageUpdate();
         }
     });
 }
-
-var mainId = document.getElementsByTagName(pageCheck);
-const idValue = mainId[0].getAttribute('id');
-switch(idValue){
-    case 'index':
-    //requête récupération
-    dbGet.open('GET', 'http://localhost:3000/api/cameras');
-    dbGet.send();
-    break;
-
-    case 'shoppingCart':
-        console.log(localStorage.getItem('cart'));
-        cartParse = JSON.parse(localStorage.getItem('cart'));
-        console.log(cartParse.orderMap);
-    break;
-
-    case 'product':
-    break;
-
-    default:
-        console.log('Erreur: ' + mainId[0]);
-}
-

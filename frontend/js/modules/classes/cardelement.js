@@ -1,3 +1,5 @@
+console.log('Test de présence');
+
 //Classe carte
 class cardElement{
     constructor(type, attributeMap, content, parentClassName) {

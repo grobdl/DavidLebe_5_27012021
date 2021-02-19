@@ -1,3 +1,5 @@
+
+
 //Classe carte
 class cardElement{
     constructor(type, attributeMap, content, parentClassName) {
@@ -158,14 +160,19 @@ var HTMLCollectionCleaner = function(value, parentFunction){
     }
 }
 
-var quantityRecover = function(i){
+var quantityRecover = function(){
     var qty = 'Qty';
     if(shoppingCart.orderMap){
         const map = shoppingCart.orderMap;
-        const id = cameras[i]._id;
+        const articles = document.getElementsByTagName('article');
         for (const [key, value] of map){
-            if (key == id){
-                qty = value;
+            for(let count in articles){
+                if(HTMLCollectionCleaner(count)){
+                    const id = articles[count].getAttribute('id');
+                    if (key == id){
+                        qty = value;
+                    }
+                }
             }
         }
         return qty;
@@ -202,6 +209,7 @@ var checkIfOrdered= function(product){
 //Introduit un bouton de commande
 var notOrdered = function(i){
     blocBuilder(orderButton, i);
+    console.log('notOrdered: ' + i);
 }
 
 //Introduit une interface avancée de commande
@@ -210,10 +218,12 @@ var alreadyOrdered = function(i){
     blocBuilder(substractButton, i);
     blocBuilder(quantityOrdered, i);
     blocBuilder(addButton, i);
+    console.log('alreadyOrdered: ' + i);
 }
 
 //Efface le bloc de commande avancé
 var alreadyOrderedRemover = function(i){
+    console.log('alreadyOrderedRemover se lance');
     blocRemover(deleteButton, i);
     blocRemover(substractButton, i);
     blocRemover(quantityOrdered, i);
@@ -222,6 +232,8 @@ var alreadyOrderedRemover = function(i){
 
 //Met à jour le bloc de commande
 var orderRefresher = function(removedButtons, i, orderDiv){
+    console.log('orderRefresher: ' + i);
+    console.log('removedButtons: ' + removedButtons);
     switch(removedButtons){
         case orderButton:
             blocRemover(removedButtons, i);
@@ -262,11 +274,18 @@ var blocBuilder = function(object, i){
     for(const [key, value] of object.attributeMap){
         element.setAttribute(key, value);
     }
-    if (object == quantityOrdered){
-        element.innerHTML = quantityRecover(i);
-    }else{
-        element.innerHTML = object.content;
-    }
+    switch(object){
+        case quantityOrdered:
+            element.innerHTML = quantityRecover(i);
+        break;
+
+        case bloc:
+            element.setAttribute('id', cameras[i]._id);
+        break;
+
+        default:
+            element.innerHTML = object.content;
+    }   
     if(parent[i]){
         parent[i].appendChild(element);
     }else{
@@ -309,6 +328,8 @@ var contentBuilder = function(product, i){
 
 //Construit l'interface de commande en fonction du remplissage du panier
 var orderBuilder = function(i){
+    /*const articles = document.getElementsByTagName('article');
+    const articleId = articles[0].getAttribute('id');*/
     if(checkIfOrdered(cameras[i])){
         alreadyOrdered(i);
     }else{
@@ -323,48 +344,48 @@ var articleBuilder = function(product, i, page){
     contentBuilder(cameras[i], i);
     blocBuilder(buyDiv, i);
     orderBuilder(i);
-    console.log('articleBuilder' + i);
-    console.log(cameras[i]._id);
 };
 
 var operateEvent = function(operationTypeClass, count, orderDiv){
     const operationButton = orderDiv.getElementsByClassName(operationTypeClass);
+    const articles = document.getElementsByTagName('article');
+    const articleId = articles[count].getAttribute('id');
     for (let i in operationButton){
         if(HTMLCollectionCleaner(i) && operationButton[i]){
             operationButton[i].addEventListener('click', function(){
                 let cartMap = shoppingCart.orderMap;
-                value = cartMap.get(cameras[count]._id);
+                value = cartMap.get(articleId);
                 switch (operationTypeClass){
                     case 'firstOrder col-12':
-                        cartMap.set(cameras[count]._id, 1);
+                        cartMap.set(articleId, 1);
                         quantityOrdered.content= 1;
                         orderRefresher(orderButton, count, orderDiv);
-                        console.log(cameras[count]._id);
+                        console.log('quantityOrdered: ' + quantityOrdered.content);
                         break;
                     case 'add col-3':
                         value++;
                         quantityOrdered.content= value;
-                        cartMap.set(cameras[count]._id, value);
+                        cartMap.set(articleId, value);
                         orderRefresher('alreadyButtons', count, orderDiv);
-                        console.log(cameras[count]._id);
+                        console.log('quantityOrdered: ' + quantityOrdered.content);
                         break;
                     case 'substract col-3':
                         value--;
                         quantityOrdered.content= value;
                         if(value == 0){
-                            cartMap.delete(cameras[count]._id);
+                            cartMap.delete(articleId);
                             orderRefresher('deleteCart', count, orderDiv);
-                            console.log(cameras[count]._id);
+                            console.log('quantityOrdered: ' + quantityOrdered.content);
                         }else{
-                            cartMap.set(cameras[count]._id, value);
+                            cartMap.set(articleId, value);
                             orderRefresher('alreadyButtons', count, orderDiv);
-                            console.log(cameras[count]._id);
+                            console.log('quantityOrdered: ' + quantityOrdered.content);
                         }
                         break;
                     case 'delete col-3':
-                        cartMap.delete(cameras[count]._id);
+                        cartMap.delete(articleId);
                         orderRefresher('deleteCart', count, orderDiv);
-                        console.log(cameras[count]._id);
+                        console.log('quantityOrdered: ' + quantityOrdered.content);
                         break;
                 }
             });
@@ -376,7 +397,6 @@ var operateEvent = function(operationTypeClass, count, orderDiv){
 var listenOperateButton = function(){
     const buyDiv = document.getElementsByClassName(buyDivClass);
     for(let i in buyDiv){
-        console.log(i);
         if(HTMLCollectionCleaner(i) && buyDiv[i]){
             operateEvent(orderButtonClass, i, buyDiv[i]);
             operateEvent(addOrderClass, i, buyDiv[i]);
@@ -462,12 +482,10 @@ dbGetId.onreadystatechange = function () {
         var response = JSON.parse(this.responseText);
         objectBuilder(response);
         const productId = URLParam();
-        console.log(productId);
         for (let i in cameras){
             if(idValue == 'product' && cameras[i]._id == productId){
+                i = 0;
                 articleBuilder(cameras[i], i, idValue);
-                console.log('dbGet' + i);
-                console.log(cameras[i]._id);
             }
         }
         cartUpdater();
