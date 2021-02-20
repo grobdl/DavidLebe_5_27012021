@@ -23,30 +23,6 @@ var quantityRecover = function(id){
     }
 }
 
-/*Vérifie si des produits sont présents dans le panier
-var panierFilled = function(){
-    if(shoppingCart){
-        if(shoppingCart.orderMap.size > 0){
-            return true;
-        }else{
-            return false;
-        }
-    }
-}*/
-
-//
-var shoppingCartChecker = function(product){
-    var check = false;
-    for(const [key, value] of shoppingCart.orderMap){
-        if(product._id == key && value > 0){
-            check= true;
-        }
-    }
-    return check;
-}
-
-
-
 var cartUpdater = function(){
     const cartDisplay = document.getElementById('cartLink');
     if(shoppingCart){

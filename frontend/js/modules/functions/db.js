@@ -11,22 +11,8 @@ dbGetList.onreadystatechange = function () {
                 articleBuilder(cameras[i], position, cameras[i]._id, idPageValue);
                 position++;
             }
-        }
-        cartUpdater();
-        listenOperateButton();
-        shoppingCartURL();
-    }else{
-    }
-};
-
-dbGetId.onreadystatechange = function () {
-    if(this.readyState == 4 && this.status == 200){
-        var response = JSON.parse(this.responseText);
-        objectBuilder(response);
-        const productId = URLParam();
-        for (let i in cameras){
-            if(idPageValue == 'product' && cameras[i]._id == productId){
-                articleBuilder(cameras[i], 0, productId, idPageValue);
+            if(idPageValue == 'product' && cameras[i]._id == URLParam()){
+                articleBuilder(cameras[i], 0, cameras[i]._id, idPageValue);
             }
         }
         cartUpdater();
@@ -49,8 +35,8 @@ switch(idPageValue){
     break;
 
     case 'product':
-        dbGetId.open('GET', 'http://localhost:3000/api/cameras');
-        dbGetId.send();
+    dbGetList.open('GET', 'http://localhost:3000/api/cameras');
+    dbGetList.send();
     break
 
     default:
