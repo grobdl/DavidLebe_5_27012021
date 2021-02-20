@@ -3,9 +3,11 @@ dbGetList.onreadystatechange = function () {
     if(this.readyState == 4 && this.status == 200){
         var response = JSON.parse(this.responseText);
         objectBuilder(response);
+        var j = 0;
         for (let i in cameras){
-            if(idValue == 'index' || (idValue == 'shoppingCart' && shoppingCartChecker(cameras[i]))){
-                articleBuilder(cameras[i], i, idValue);
+            if(idPageValue == 'index' || (idPageValue == 'shoppingCart' && shoppingCartChecker(cameras[i]))){
+                articleBuilder(cameras[i], j, cameras[i]._id, idPageValue);
+                j++;
             }
         }
         cartUpdater();
@@ -21,9 +23,8 @@ dbGetId.onreadystatechange = function () {
         objectBuilder(response);
         const productId = URLParam();
         for (let i in cameras){
-            if(idValue == 'product' && cameras[i]._id == productId){
-                i = 0;
-                articleBuilder(cameras[i], i, idValue);
+            if(idPageValue == 'product' && cameras[i]._id == productId){
+                articleBuilder(cameras[i], 0, productId, idPageValue);
             }
         }
         cartUpdater();
@@ -33,7 +34,7 @@ dbGetId.onreadystatechange = function () {
     }
 };
 
-switch(idValue){
+switch(idPageValue){
     case 'index':
     //requête récupération
     dbGetList.open('GET', 'http://localhost:3000/api/cameras');

@@ -6,9 +6,9 @@ var cartSend = new XMLHttpRequest();
 var cameras= [];
 const pageCheck = 'main';
 var mainId = document.getElementsByTagName(pageCheck);
-const idValue = mainId[0].getAttribute('id');
+const idPageValue = mainId[0].getAttribute('id');
 const orderMap= new Map;
-const sectionClass = idValue + ' row';
+const sectionClass = idPageValue + ' row';
 var articleClass = '';
 var productDivClass = '';
 var moreInfoClass = '';
@@ -22,7 +22,7 @@ var addOrderClass = '';
 var substractOrderClass = '';
 var quantityOrderClass = '';
 var orderButtonClass = '';
-switch(idValue){
+switch(idPageValue){
     case 'index':
         articleClass = 'col-12 col-md-6 col-lg-4';
         productDivClass = 'productDiv d-flex flex-wrap';

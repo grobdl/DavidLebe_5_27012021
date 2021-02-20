@@ -1,133 +1,114 @@
-
-
-//Introduit un bouton de commande
-var notOrdered = function(i){
-    blocBuilder(orderButton, i);
-    console.log('notOrdered: ' + i);
+var articleBuilder = function(product, position, id, idPageValue){
+    elementBuilder(bloc, position, id);
+    elementBuilder(productInfoDiv, position, id);
+    contentBuilder(product, position, id, idPageValue);
+    elementBuilder(buyDiv, position, id, idPageValue);
+    orderBuilder(position, id);
 }
 
-var alreadyOrdered = function(i){
-    blocBuilder(deleteButton, i);
-    blocBuilder(substractButton, i);
-    blocBuilder(quantityOrdered, i);
-    blocBuilder(addButton, i);
-    console.log('alreadyOrdered: ' + i);
-}
-
-//Construit l'interface de commande en fonction du remplissage du panier
-var orderBuilder = function(i){
-    /*const articles = document.getElementsByTagName('article');
-    const articleId = articles[0].getAttribute('id');*/
-    if(checkIfOrdered(cameras[i])){
-        alreadyOrdered(i);
-    }else{
-        notOrdered(i);
-    }
-};
-
-var blocBuilder = function(object, i){
-    const parent = document.getElementsByClassName(object.parentClassName);
-    const element = document.createElement(object.type);
-    for(const [key, value] of object.attributeMap){
+var elementBuilder = function(elementType, position, id){
+    const element = document.createElement(elementType.type);
+    for(const [key, value] of elementType.attributeMap){
         element.setAttribute(key, value);
     }
-    switch(object){
-        case quantityOrdered:
-            element.innerHTML = quantityRecover(i);
+    switch(elementType){
+        case bloc: 
+        element.setAttribute('id', id);
+        break;
+    }
+    if(elementType.content != ''){
+        element.innerHTML = elementType.content;
+    }
+    const elementParent = parentFinder(position, elementType.parentClassName);
+    elementParent.appendChild(element);
+}
+
+var contentBuilder = function(product, position, idPageValue){
+    for (const property in product){
+        switch (property){
+            case 'name':
+            const productName = new cardElement('h3', [['class', productNameClass]], product.name, productDivClass);
+            elementBuilder(productName, position, idPageValue);
+            break;
+
+            case 'price':
+            const productPrice = new cardElement('p', [['class', productPriceClass]], product.price + '€', productDivClass);
+            elementBuilder(productPrice, position, idPageValue);
+            break;
+
+            case 'imageURL':
+            const productImage = new cardElement('img', [['class', productImageClass], ['src', product.imageURL]], '', productDivClass);
+            elementBuilder(productImage, position, idPageValue);
+            break;
+
+            case 'description':
+            const productDescription = new cardElement('p', [['class', productDescriptionClass]], product.description, productDivClass);
+            elementBuilder(productDescription, position, idPageValue);
+            break;
+
+            case 'custom':
+            break;
+
+            default:
+          }
+      }
+      const moreInfo = new cardElement('a', [['class', moreInfoClass], ['href', 'produit.html?_id=' + product._id]], 'Plus de détails', productDivClass);
+      elementBuilder(moreInfo, position, idPageValue);  
+}
+
+var orderBuilder = function(position, id){
+    if(alreadyOrdered(id)){
+        elementBuilder(deleteButton, position, id);
+        elementBuilder(substractButton, position, id);
+        elementBuilder(quantityOrdered, position, id);
+        elementBuilder(addButton, position, id);
+    }else{
+        elementBuilder(firstOrderButton, position, id);
+    }
+}
+
+var alreadyOrdered = function(id){
+    var retour = false;
+    if(shoppingCart.orderMap.size > 0){
+        console.log('AlreadyOrdered, orderMap informée');
+        for(const [key, value] of shoppingCart.orderMap){
+            if(key == id){
+                retour = true;
+            }
+        }
+    }else{
+        console.log('AlreadyOrdered, orderMap vide');
+    }
+    return retour;
+}
+
+var orderRefresher = function(clickedButton, position, buyDiv, id){
+    switch(clickedButton){
+        case firstOrderButton:
+        blocRemover(orderButtonClass, buyDiv);
         break;
 
-        case bloc:
-            element.setAttribute('id', cameras[i]._id);
+        case 'alreadyButtons':
+        blocRemover(deleteOrderClass, buyDiv);
+        blocRemover(substractOrderClass, buyDiv);
+        blocRemover(quantityOrderClass, buyDiv);
+        blocRemover(addOrderClass, buyDiv);
+        break;
+
+        case 'deleteCart':
+        blocRemover(deleteOrderClass, buyDiv);
+        blocRemover(substractOrderClass, buyDiv);
+        blocRemover(quantityOrderClass,buyDiv);
+        blocRemover(addOrderClass, buyDiv);
         break;
 
         default:
-            element.innerHTML = object.content;
-    }   
-    if(parent[i]){
-        parent[i].appendChild(element);
-    }else{
-        parent[0].appendChild(element);
     }
-};
-
-//Implémente les détails de chaque produit dans l'article ainsi qu'un lien vers la page produit
-var contentBuilder = function(product, i){
-    for (let property in product){
-        switch (property){
-            case 'name':
-                const productName = new cardElement('h3', [['class', productNameClass]], product[property], productDivClass);
-                blocBuilder(productName, i);
-                break;
-            case 'price':
-                const productPrice = new cardElement('p', [['class', productPriceClass]], product[property] + ' €', productDivClass);
-                blocBuilder(productPrice, i);
-                break;
-            case 'description':
-                const productDescription = new cardElement('p', [['class', productDescriptionClass]], product[property], productDivClass);
-                blocBuilder(productDescription, i);
-                break;
-            case 'imageURL':
-                const productImage = new cardElement('img', [['class', productImageClass], ['src', product[property]]], '', productDivClass);
-                blocBuilder(productImage, i);
-                break;
-            default:
-        }
-    }    
-    const urlData = 'produit.html?_id=' + cameras[i]._id;
-    const moreInfo = new cardElement('a', [['class', moreInfoClass], ['href', urlData]], 'Plus de détails', productDivClass);
-    blocBuilder(moreInfo, i);
-};
-
-// crée un élément HTML, ainsi que ses attributs et son contenu
-var blocRemover = function(object, i){
-    const parent = document.getElementsByClassName(object.parentClassName);
-    parent[i].removeChild(parent[i].firstChild);
+    orderBuilder(position, id);
+    listenOperateButton();
 }
 
-//Efface le bloc de commande avancé
-var alreadyOrderedRemover = function(i){
-    console.log('alreadyOrderedRemover se lance');
-    blocRemover(deleteButton, i);
-    blocRemover(substractButton, i);
-    blocRemover(quantityOrdered, i);
-    blocRemover(addButton, i);
+var blocRemover = function(operationTypeButton, buyDiv){
+    const element = buyDiv.getElementsByClassName(operationTypeButton);
+    buyDiv.removeChild(element[0]);
 }
-
-//Met à jour le bloc de commande
-var orderRefresher = function(removedButtons, i, orderDiv){
-    console.log('orderRefresher: ' + i);
-    console.log('removedButtons: ' + removedButtons);
-    switch(removedButtons){
-        case orderButton:
-            blocRemover(removedButtons, i);
-            orderBuilder(i);
-            operateEvent(addOrderClass, i, orderDiv);
-            operateEvent(substractOrderClass, i, orderDiv);
-            operateEvent(deleteOrderClass, i, orderDiv);
-            break;
-
-        case 'alreadyButtons':
-            alreadyOrderedRemover(i);
-            orderBuilder(i);
-            operateEvent(addOrderClass, i, orderDiv);
-            operateEvent(substractOrderClass, i, orderDiv);
-            operateEvent(deleteOrderClass, i, orderDiv);
-            break;
-        
-        case 'deleteCart':
-            alreadyOrderedRemover(i);
-            orderBuilder(i);
-            operateEvent(orderButtonClass, i, orderDiv);
-            break;
-    }
-    cartUpdater();
-}
-
-//construit le bloc article
-var articleBuilder = function(product, i, page){
-    blocBuilder(bloc, i);
-    blocBuilder(productDiv, i);
-    contentBuilder(cameras[i], i);
-    blocBuilder(buyDiv, i);
-    orderBuilder(i);
-};

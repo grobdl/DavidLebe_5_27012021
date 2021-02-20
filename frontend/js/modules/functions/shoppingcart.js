@@ -1,3 +1,10 @@
+var localStorageUpdate = function(){
+    shoppingCart.orderMap = Array.from(shoppingCart.orderMap);
+    const cartString = JSON.stringify(shoppingCart);
+    shoppingCart.orderMap = new Map(shoppingCart.orderMap);
+    localStorage.setItem('cart', cartString);
+}
+
 var quantityRecover = function(){
     var qty = 'Qty';
     if(shoppingCart.orderMap){
@@ -39,20 +46,7 @@ var shoppingCartChecker = function(product){
     return check;
 }
 
-//Vérifie si un produit est déjà présent dans le panier
-var checkIfOrdered= function(product){
-    if (panierFilled()){
-        retour = false;
-        for (const [key, value] of shoppingCart.orderMap){
-            if(key == product._id){
-                retour = true;
-            }
-        }
-        return retour;
-    }else{
-        return false;
-    }
-}
+
 
 var cartUpdater = function(){
     const cartDisplay = document.getElementById('cartLink');

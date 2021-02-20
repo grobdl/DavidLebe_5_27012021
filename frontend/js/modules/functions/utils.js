@@ -14,16 +14,21 @@ var objectBuilder = function(jsonObject){
     }
 };
 
-var localStorageUpdate = function(){
-    shoppingCart.orderMap = Array.from(shoppingCart.orderMap);
-    const cartString = JSON.stringify(shoppingCart);
-    shoppingCart.orderMap = new Map(shoppingCart.orderMap);
-    localStorage.setItem('cart', cartString);
-}
-
 var URLParam = function(){
     const URLParam = new URLSearchParams(window.location.search);
     const paramValue = URLParam.get('_id');
     return paramValue;
 }
 
+var parentFinder = function(position, parentClassName){
+    console.log(position);
+    console.log(parentClassName);
+    const parentsList = document.getElementsByClassName(parentClassName);
+    var parent;
+    if(parentsList.length > 1){
+        parent = parentsList[position];        
+    }else{
+        parent = parentsList[0]; 
+    }
+    return parent;
+}
