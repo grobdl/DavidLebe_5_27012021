@@ -3,7 +3,7 @@ var articleBuilder = function(product, position, id, idPageValue){
     elementBuilder(productInfoDiv, position, id);
     contentBuilder(product, position, id, idPageValue);
     elementBuilder(buyDiv, position, id, idPageValue);
-    orderBuilder(position, id);
+    orderBuilder(position, id, false);
 }
 
 var elementBuilder = function(elementType, position, id){
@@ -14,6 +14,10 @@ var elementBuilder = function(elementType, position, id){
     switch(elementType){
         case bloc: 
         element.setAttribute('id', id);
+        break;
+
+        case quantityOrdered:
+        elementType.content= quantityRecover(id);
         break;
     }
     if(elementType.content != ''){
@@ -56,7 +60,17 @@ var contentBuilder = function(product, position, idPageValue){
       elementBuilder(moreInfo, position, idPageValue);  
 }
 
-var orderBuilder = function(position, id){
+var orderBuilder = function(position, id, reOrder){
+    if(reOrder){
+        const orderParents = document.getElementsByClassName(buyDivClass);
+        const orderParent = orderParents[position].getElementsByTagName('*');
+        let nodeList = orderParent.length - 1;
+        console.log(nodeList);
+        while(nodeList >= 0){
+            orderParent[nodeList].remove();
+            nodeList--;
+        }
+    }
     if(alreadyOrdered(id)){
         elementBuilder(deleteButton, position, id);
         elementBuilder(substractButton, position, id);
@@ -86,44 +100,26 @@ var alreadyOrdered = function(id){
 }
 
 var orderRefresher = function(clickedButton, position, buyDiv, id){
-    console.log('orderRefresher position: ' + position);
-    console.log('orderRefresher clickedButton: ' + clickedButton);
-    console.log('orderRefresher buyDiv: ');
-    console.log(buyDiv);
     switch(clickedButton){
         case 'firstOrderDone':
-        blocRemover(orderButtonClass, buyDiv);
-        orderBuilder(position, id);
-        operateEvent(addOrderClass, position, buyDiv[position], id);
-        operateEvent(substractOrderClass, position, buyDiv[position], id);
-        operateEvent(deleteOrderClass, position, buyDiv[position], id);
+        orderBuilder(position, id, true);
+        operateEvent(addOrderClass, position, buyDiv, id);
+        operateEvent(substractOrderClass, position, buyDiv, id);
+        operateEvent(deleteOrderClass, position, buyDiv, id);
         break;
 
         case 'alreadyButtons':
-        blocRemover(deleteOrderClass, buyDiv);
-        blocRemover(substractOrderClass, buyDiv);
-        blocRemover(quantityOrderClass, buyDiv);
-        blocRemover(addOrderClass, buyDiv);
-        orderBuilder(position, id);
-        operateEvent(addOrderClass, position, buyDiv[position], id);
-        operateEvent(substractOrderClass, position, buyDiv[position], id);
-        operateEvent(deleteOrderClass, position, buyDiv[position], id);
+        orderBuilder(position, id, true);
+        operateEvent(addOrderClass, position, buyDiv, id);
+        operateEvent(substractOrderClass, position, buyDiv, id);
+        operateEvent(deleteOrderClass, position, buyDiv, id);
         break;
 
         case 'deleteCart':
-        blocRemover(deleteOrderClass, buyDiv);
-        blocRemover(substractOrderClass, buyDiv);
-        blocRemover(quantityOrderClass,buyDiv);
-        blocRemover(addOrderClass, buyDiv);
-        orderBuilder(position, id);
-        operateEvent(orderButtonClass, position, buyDiv[position], id);
+        orderBuilder(position, id, true);
+        operateEvent(orderButtonClass, position, buyDiv, id);
         break;
 
         default:
     }
-}
-
-var blocRemover = function(operationTypeButton, buyDiv){
-    const element = buyDiv.getElementsByClassName(operationTypeButton);
-    buyDiv.removeChild(element[0]);
 }

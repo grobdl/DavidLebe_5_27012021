@@ -3,11 +3,13 @@ dbGetList.onreadystatechange = function () {
     if(this.readyState == 4 && this.status == 200){
         var response = JSON.parse(this.responseText);
         objectBuilder(response);
-        var j = 0;
+        var position = 0;
         for (let i in cameras){
-            if(idPageValue == 'index' || (idPageValue == 'shoppingCart' && shoppingCartChecker(cameras[i]))){
-                articleBuilder(cameras[i], j, cameras[i]._id, idPageValue);
-                j++;
+            if(idPageValue == 'index' || (idPageValue == 'shoppingCart' && alreadyOrdered(cameras[i]._id))){
+                console.log(position);
+                console.log(cameras[i]._id);
+                articleBuilder(cameras[i], position, cameras[i]._id, idPageValue);
+                position++;
             }
         }
         cartUpdater();

@@ -2,9 +2,9 @@ var listenOperateButton = function(){
     const buyDiv = document.getElementsByClassName(buyDivClass);
     for(let position in buyDiv){
         if(HTMLCollectionCleaner(position) && buyDiv[position]){
-            console.log('listenOperateButton position: ' + position);
-            console.log('listenOperateButton buyDiv[position]:');
-            console.log(buyDiv[position]);
+            //console.log('listenOperateButton position: ' + position);
+            //console.log('listenOperateButton buyDiv[position]:');
+            //console.log(buyDiv[position]);
             const buyDivPArent = parentFinder(position, articleClass);
             const buyDivId = buyDivPArent.getAttribute('id');
             operateEvent(orderButtonClass, position, buyDiv[position], buyDivId);
@@ -18,28 +18,37 @@ var listenOperateButton = function(){
 
 var operateEvent = function(operationTypeClass, position, buyDiv, id){
     const operationButton = buyDiv.getElementsByClassName(operationTypeClass);
-    for (let item in operationButton){
-        if(HTMLCollectionCleaner(item) && operationButton[item]){
-            operationButton[item].addEventListener('click', function(){
+    //console.log('operateEvent, operationTypeClass: ');
+    //console.log(operationTypeClass);
+    //console.log('operateEvent, operationButton:');
+    //console.log(operationButton);
+    //console.log('operateEvent, id: ' + id);
+    for (let count in operationButton){
+        //console.log('operateEvent, count: ' + count);
+        //console.log('operateEvent, operationButton[count]: ');
+        //console.log(operationButton[count]);
+        //console.log(HTMLCollectionCleaner(count));
+        if(HTMLCollectionCleaner(count) && operationButton[count]){
+            console.log('HTMLCC Passe');
+            operationButton[count].addEventListener('click', function(){
+                console.log('clic acquis');
                 let cartMap = shoppingCart.orderMap;
                 value = cartMap.get(id);
                 switch (operationTypeClass){
-                    case 'firstOrder col-12':
+                    case orderButtonClass:
                         cartMap.set(id, 1);
                         quantityOrdered.content= 1;
-                        console.log('operateEvent: ');
-                        console.log(buyDiv);
                         orderRefresher('firstOrderDone', position, buyDiv, id);
                         console.log('quantityOrdered: ' + quantityOrdered.content);
                         break;
-                    case 'add col-3':
+                    case addOrderClass:
                         value++;
                         quantityOrdered.content= value;
                         cartMap.set(id, value);
                         orderRefresher('alreadyButtons', position, buyDiv, id);
                         console.log('quantityOrdered: ' + quantityOrdered.content);
                         break;
-                    case 'substract col-3':
+                    case substractOrderClass:
                         value--;
                         quantityOrdered.content= value;
                         if(value == 0){
@@ -52,13 +61,16 @@ var operateEvent = function(operationTypeClass, position, buyDiv, id){
                             console.log('quantityOrdered: ' + quantityOrdered.content);
                         }
                         break;
-                    case 'delete col-3':
+                    case deleteOrderClass:
                         cartMap.delete(id);
                         orderRefresher('deleteCart', position, buyDiv, id);
                         console.log('quantityOrdered: ' + quantityOrdered.content);
                         break;
                 }
+                cartUpdater();
             });
+        }else{
+            //console.log('HTMLCC + Operation[count] Faux');
         }
     }
 }
