@@ -21,8 +21,8 @@ var URLParam = function(){
 }
 
 var parentFinder = function(position, parentClassName){
-    console.log(position);
-    console.log(parentClassName);
+    console.log('parentFinder position: ' + position);
+    console.log('parentFinder parentClassName: ' + parentClassName);
     const parentsList = document.getElementsByClassName(parentClassName);
     var parent;
     if(parentsList.length > 1){

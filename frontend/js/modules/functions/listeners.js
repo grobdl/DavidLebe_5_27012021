@@ -2,7 +2,9 @@ var listenOperateButton = function(){
     const buyDiv = document.getElementsByClassName(buyDivClass);
     for(let position in buyDiv){
         if(HTMLCollectionCleaner(position) && buyDiv[position]){
-            console.log(position);
+            console.log('listenOperateButton position: ' + position);
+            console.log('listenOperateButton buyDiv[position]:');
+            console.log(buyDiv[position]);
             const buyDivPArent = parentFinder(position, articleClass);
             const buyDivId = buyDivPArent.getAttribute('id');
             operateEvent(orderButtonClass, position, buyDiv[position], buyDivId);
@@ -11,6 +13,7 @@ var listenOperateButton = function(){
             operateEvent(deleteOrderClass, position, buyDiv[position], buyDivId);
         }
     }
+    console.log('Fin de boucle');
 }
 
 var operateEvent = function(operationTypeClass, position, buyDiv, id){
@@ -24,7 +27,9 @@ var operateEvent = function(operationTypeClass, position, buyDiv, id){
                     case 'firstOrder col-12':
                         cartMap.set(id, 1);
                         quantityOrdered.content= 1;
-                        orderRefresher(firstOrderButton, position, buyDiv, id);
+                        console.log('operateEvent: ');
+                        console.log(buyDiv);
+                        orderRefresher('firstOrderDone', position, buyDiv, id);
                         console.log('quantityOrdered: ' + quantityOrdered.content);
                         break;
                     case 'add col-3':
@@ -39,7 +44,7 @@ var operateEvent = function(operationTypeClass, position, buyDiv, id){
                         quantityOrdered.content= value;
                         if(value == 0){
                             cartMap.delete(id);
-                            orderRefresher('alreadyButtons', position, buyDiv, id);
+                            orderRefresher('deleteCart', position, buyDiv, id);
                             console.log('quantityOrdered: ' + quantityOrdered.content);
                         }else{
                             cartMap.set(id, value);
@@ -49,7 +54,7 @@ var operateEvent = function(operationTypeClass, position, buyDiv, id){
                         break;
                     case 'delete col-3':
                         cartMap.delete(id);
-                        orderRefresher('alreadyButtons', position, buyDiv, id);
+                        orderRefresher('deleteCart', position, buyDiv, id);
                         console.log('quantityOrdered: ' + quantityOrdered.content);
                         break;
                 }
