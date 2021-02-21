@@ -4,21 +4,35 @@ dbGetList.onreadystatechange = function () {
         var response = JSON.parse(this.responseText);
         objectBuilder(response);
         var position = 0;
-        for (let i in cameras){
-            if(idPageValue == 'index' || (idPageValue == 'shoppingCart' && alreadyOrdered(cameras[i]._id))){
-                console.log(position);
-                console.log(cameras[i]._id);
+        switch(idPageValue){
+            case 'index':
+            for (let i in cameras){
                 articleBuilder(cameras[i], position, cameras[i]._id, idPageValue);
                 position++;
             }
-            if(idPageValue == 'product' && cameras[i]._id == URLParam()){
-                articleBuilder(cameras[i], 0, cameras[i]._id, idPageValue);
+            break;
+            
+            case 'shoppingCart':
+            for (let i in cameras){
+                if((idPageValue == 'shoppingCart' && alreadyOrdered(cameras[i]._id))){
+                articleBuilder(cameras[i], position, cameras[i]._id, idPageValue);
+                position++;
+                }
             }
+            cartBuilder(position);
+            break;
+
+            case 'product':
+                if(idPageValue == 'product' && cameras[i]._id == URLParam()){
+                    articleBuilder(cameras[i], 0, cameras[i]._id, idPageValue);
+                }
+            break;
         }
         cartUpdater();
         listenOperateButton();
         shoppingCartURL();
     }else{
+
     }
 };
 

@@ -32,3 +32,10 @@ var parentFinder = function(position, parentClassName){
     }
     return parent;
 }
+
+var numberRounder = function(value, precision){
+    operateur = Math.pow(10, precision);
+    roundedValue= Math.round(value);
+    result = roundedValue*operateur/operateur;
+    return result;
+}

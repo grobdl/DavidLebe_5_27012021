@@ -45,3 +45,21 @@ var cartUpdater = function(){
         cartDisplay.innerHTML = 'Panier Vide';
     }
 }
+
+var cartValue = function(position){
+    console.log('Début CartValue: ');
+    var totalPrice = 0;
+    console.log(shoppingCart.orderMap);
+    for (const [key, value] of shoppingCart.orderMap){
+        console.log(key);
+        console.log(value);
+        for(let i in cameras){
+            if(cameras[i]._id == key){
+                totalPrice += value*cameras[i].price;
+            }
+        }
+    }
+    console.log(totalPrice);
+    console.log('Fin CartValue: ');
+    return totalPrice;
+}

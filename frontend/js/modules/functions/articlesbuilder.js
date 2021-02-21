@@ -8,6 +8,8 @@ var articleBuilder = function(product, position, id, idPageValue){
 
 var elementBuilder = function(elementType, position, id){
     const element = document.createElement(elementType.type);
+    console.log('elementType: ');
+    console.log(elementType);
     for(const [key, value] of elementType.attributeMap){
         element.setAttribute(key, value);
     }
@@ -17,8 +19,37 @@ var elementBuilder = function(elementType, position, id){
         break;
 
         case quantityOrdered:
-        elementType.content= quantityRecover(id);
+        elementType.content = quantityRecover(id);
         break;
+
+        case cartItemDesignation:
+        elementType.content = id;
+        break;
+
+        case cartItemPrice:
+        var contentValue;
+        switch (id){
+            case 'Total Panier: ':
+            console.log('cartValue: ' + cartValue());
+            contentValue= cartValue();
+            break;
+
+            case 'Dont TVA 20%: ':
+            console.log('cartValue: ' + cartValue());
+            taxValue = cartValue()/1.2*0.2;
+            roundedTax = numberRounder(taxValue, 2);
+            contentValue= roundedTax;
+            break
+
+            case 'Prix Total: ':
+            break;
+
+            default:
+            contentValue= cartItems.get(id);
+        }
+        console.log(contentValue);
+        orderTotalPrice += contentValue;
+        elementType.content= contentValue + ' €';
     }
     if(elementType.content != ''){
         element.innerHTML = elementType.content;

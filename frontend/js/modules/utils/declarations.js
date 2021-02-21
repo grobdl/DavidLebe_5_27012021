@@ -19,4 +19,8 @@ const substractButton = new cardElement('button', [['class', substractOrderClass
 const quantityOrdered = new cardElement('p', [['class', quantityOrderClass]], 'Qty', buyDivClass);
 const addButton = new cardElement('button', [['class', addOrderClass]], '+', buyDivClass);
 const firstOrderButton = new cardElement('button', [['class', orderButtonClass]], 'Commander', buyDivClass);
+const cartOrderPrice = new cardElement('article', [['class', totalPriceClass]], '', sectionClass);
+const cartFreeSpace = new cardElement('p', [['class', cartFreeSpaceClass]], '', totalPriceClass);
+const cartItemDesignation = new cardElement('p', [['class', cartDesignationClass]], '', totalPriceClass);
+const cartItemPrice = new cardElement('p', [['class', cartPriceClass]], '', totalPriceClass);
 
