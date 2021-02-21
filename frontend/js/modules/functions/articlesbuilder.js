@@ -27,28 +27,30 @@ var elementBuilder = function(elementType, position, id){
         break;
 
         case cartItemPrice:
-        var contentValue;
+        var contentValue= 0;
         switch (id){
             case 'Total Panier: ':
-            console.log('cartValue: ' + cartValue());
             contentValue= cartValue();
+            orderTotalPrice += contentValue;
             break;
 
             case 'Dont TVA 20%: ':
-            console.log('cartValue: ' + cartValue());
             taxValue = cartValue()/1.2*0.2;
             roundedTax = numberRounder(taxValue, 2);
             contentValue= roundedTax;
             break
 
             case 'Prix Total: ':
+            contentValue= orderTotalPrice;
+            orderTotalPrice = 0;
             break;
 
             default:
             contentValue= cartItems.get(id);
+            orderTotalPrice += contentValue;
         }
-        console.log(contentValue);
-        orderTotalPrice += contentValue;
+        console.log('contentValue: ' + contentValue);
+        console.log('orderTotalPrice: ' + orderTotalPrice);
         elementType.content= contentValue + ' €';
     }
     if(elementType.content != ''){
@@ -147,10 +149,33 @@ var orderRefresher = function(clickedButton, position, buyDiv, id){
         break;
 
         case 'deleteCart':
-        orderBuilder(position, id, true);
-        operateEvent(orderButtonClass, position, buyDiv, id);
+        if(idPageValue == 'shoppingCart'){
+            const articleList = document.getElementsByClassName(articleClass);
+            var count = articleList.length - 1;
+            while(count >= 0){
+                    articleList[count].remove();
+                    count--;
+            }
+            position = 0;            
+            for (let i in cameras){
+                if((idPageValue == 'shoppingCart' && alreadyOrdered(cameras[i]._id))){
+                articleBuilder(cameras[i], position, cameras[i]._id, idPageValue);
+                position++;
+                }
+            }
+            listenOperateButton();
+        }else{
+            orderBuilder(position, id, true);
+            operateEvent(orderButtonClass, position, buyDiv, id);
+        }
         break;
 
         default:
+    }
+    if(idPageValue == 'shoppingCart'){
+        const cartTotalsBloc = document.getElementsByClassName(totalPriceClass);
+        cartTotalsBloc[0].remove();
+        orderTotalPrice = 0;
+        cartBuilder(position);
     }
 }

@@ -35,7 +35,7 @@ var parentFinder = function(position, parentClassName){
 
 var numberRounder = function(value, precision){
     operateur = Math.pow(10, precision);
-    roundedValue= Math.round(value);
-    result = roundedValue*operateur/operateur;
-    return result;
+    result = value*operateur;
+    roundedResult = Math.round(result, 2)/100;
+    return roundedResult;
 }

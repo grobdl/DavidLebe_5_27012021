@@ -23,9 +23,11 @@ dbGetList.onreadystatechange = function () {
             break;
 
             case 'product':
+            for (let i in cameras){
                 if(idPageValue == 'product' && cameras[i]._id == URLParam()){
                     articleBuilder(cameras[i], 0, cameras[i]._id, idPageValue);
                 }
+            }
             break;
         }
         cartUpdater();

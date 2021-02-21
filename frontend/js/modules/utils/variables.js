@@ -3,9 +3,9 @@
 var dbGetList = new XMLHttpRequest();
 var cartSend = new XMLHttpRequest();
 var cameras= [];
-var cartItems = new Map([['Total Panier: ', ''], ['Frais de Transport: ', '30'], ['Dont TVA 20%: ', ''], ['Prix Total: ', '']]);
+var cartItems = new Map([['Total Panier: ', 0], ['Frais de Transport: ', 30], ['Dont TVA 20%: ', 0], ['Prix Total: ', 0]]);
 const pageCheck = 'main';
-var orderTotalPrice;
+var orderTotalPrice = 0;
 var mainId = document.getElementsByTagName(pageCheck);
 const idPageValue = mainId[0].getAttribute('id');
 const orderMap= new Map;
@@ -17,7 +17,7 @@ var addOrderClass, substractOrderClass, quantityOrderClass, orderButtonClass;
 var cartFreeSpaceClass, cartDesignationClass, cartPriceClass;
 switch(idPageValue){
     case 'index':
-        articleClass = 'col-12 col-md-6 col-lg-4';
+        articleClass = 'article col-12 col-md-6 col-lg-4';
         productDivClass = 'productDiv d-flex flex-wrap';
         moreInfoClass = 'moreInfo col-12 text-right';
         buyDivClass = 'buyDiv d-flex flex-wrap justify-content-center';
@@ -33,8 +33,8 @@ switch(idPageValue){
     break;
 
     case 'shoppingCart':
-        articleClass = 'col-12 d-flex flex-wrap';
-        totalPriceClass = 'col-12 d-flex flex-wrap justify-content-end'
+        articleClass = 'article col-12 d-flex flex-wrap';
+        totalPriceClass = 'total col-12 d-flex flex-wrap justify-content-end'
         productDivClass = 'productDiv d-flex flex-wrap flex-column';
         moreInfoClass = 'd-none';
         buyDivClass = 'buyDiv d-flex flex-wrap justify-content-center';
@@ -47,9 +47,9 @@ switch(idPageValue){
         productPriceClass = 'col-4';
         productImageClass = 'col-2';
         productDescriptionClass = 'd-none';
-        cartFreeSpaceClass = 'col-7'
+        cartFreeSpaceClass = 'col-6'
         cartDesignationClass = 'col-3';
-        cartPriceClass = 'col-2 text-right';
+        cartPriceClass = 'price col-3 text-right';
     break;
 
     case 'product':
