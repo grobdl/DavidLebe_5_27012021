@@ -13,6 +13,12 @@ var listenOperateButton = function(){
             operateEvent(deleteOrderClass, position, buyDiv[position], buyDivId);
         }
     }
+    if(idPageValue == 'shoppingCart'){
+        const cartValidateButton = document.getElementsByClassName(cartValidationClass);
+        cartValidateButton[0].addEventListener('click', function(){
+            window.location.href= 'shipping.html';
+        })
+    }
     console.log('Fin de boucle');
 }
 

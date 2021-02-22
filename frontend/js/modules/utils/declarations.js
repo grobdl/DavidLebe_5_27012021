@@ -20,7 +20,8 @@ const quantityOrdered = new cardElement('p', [['class', quantityOrderClass]], 'Q
 const addButton = new cardElement('button', [['class', addOrderClass]], '+', buyDivClass);
 const firstOrderButton = new cardElement('button', [['class', orderButtonClass]], 'Commander', buyDivClass);
 const cartOrderPrice = new cardElement('article', [['class', totalPriceClass]], '', sectionClass);
-const cartFreeSpace = new cardElement('p', [['class', cartFreeSpaceClass]], '', totalPriceClass);
+const cartFreeSpace = new cardElement('div', [['class', cartFreeSpaceClass]], '', totalPriceClass);
 const cartItemDesignation = new cardElement('p', [['class', cartDesignationClass]], '', totalPriceClass);
 const cartItemPrice = new cardElement('p', [['class', cartPriceClass]], '', totalPriceClass);
+const cartValidation = new cardElement('button', [['class', cartValidationClass]], 'Valider mon panier', totalPriceClass);
 

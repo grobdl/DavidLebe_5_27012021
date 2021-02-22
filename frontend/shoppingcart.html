@@ -28,8 +28,29 @@
     </header>
     <main id="shoppingCart">
         <div class="container">
-            <section class="shoppingCart row">
-            </section>
+            <form method="post" action="shipping.html" class="shoppingCart row">
+                <fieldset class="col-6">
+                    <legend>Vos coordonnées</legend>  
+                    <label for="name" class="col-6">Votre nom:</label>
+                    <input type="text" name="name" class="col-3"/>
+                    <label for="surName" class="col-6">Votre prénom:</label>   
+                    <input type="text" name="surName" class="col-3"/>
+                    <label for="tel" class="col-6">Votre numéro de téléphone:</label>   
+                    <input type="tel" name="tel" class="col-3"/>
+                    <label for="mail" class="col-6">Votre e-mail:</label>   
+                    <input type="email" name="mail" class="col-3"/>
+                </fieldset>
+                <fieldset class="col-6">
+                    <legend>Adresse de livraison</legend>
+                    <label for="adresse1" class="col-12">Adresse:</label>   
+                    <input type="text" name="adresse1" class="col-12"/>
+                    <input type="text" name="adresse2" class="col-12"/>
+                    <label for="codePostal" class="col-6">Code Postal:</label>   
+                    <input type="text" name="codePostal" class="col-4"/>
+                    <label for="ville" class="col-6">Ville:</label>   
+                    <input type="text" name="ville" class="col-4"/>
+                </fieldset>
+            </form>
         </div>
     </main>
 </body><script src='./js/modules/classes/cardelement.js'></script>

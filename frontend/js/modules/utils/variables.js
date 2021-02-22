@@ -14,7 +14,7 @@ var articleClass, totalPriceClass, productDivClass, moreInfoClass;
 var productNameClass, productPriceClass,productImageClass;
 var productDescriptionClass, buyDivClass, deleteOrderClass;
 var addOrderClass, substractOrderClass, quantityOrderClass, orderButtonClass;
-var cartFreeSpaceClass, cartDesignationClass, cartPriceClass;
+var cartFreeSpaceClass, cartDesignationClass, cartPriceClass, cartValidationClass;
 switch(idPageValue){
     case 'index':
         articleClass = 'article col-12 col-md-6 col-lg-4';
@@ -50,6 +50,7 @@ switch(idPageValue){
         cartFreeSpaceClass = 'col-6'
         cartDesignationClass = 'col-3';
         cartPriceClass = 'price col-3 text-right';
+        cartValidationClass= 'cartValidate col-6';
     break;
 
     case 'product':
