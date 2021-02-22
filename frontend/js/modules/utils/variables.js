@@ -1,7 +1,7 @@
 
 //variables globales 
 var dbGetList = new XMLHttpRequest();
-var cartSend = new XMLHttpRequest();
+var dbPost = new XMLHttpRequest();
 var cameras= [];
 var cartItems = new Map([['Total Panier: ', 0], ['Frais de Transport: ', 30], ['Dont TVA 20%: ', 0], ['Prix Total: ', 0]]);
 const pageCheck = 'main';

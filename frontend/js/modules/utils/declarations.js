@@ -23,5 +23,5 @@ const cartOrderPrice = new cardElement('article', [['class', totalPriceClass]], 
 const cartFreeSpace = new cardElement('div', [['class', cartFreeSpaceClass]], '', totalPriceClass);
 const cartItemDesignation = new cardElement('p', [['class', cartDesignationClass]], '', totalPriceClass);
 const cartItemPrice = new cardElement('p', [['class', cartPriceClass]], '', totalPriceClass);
-const cartValidation = new cardElement('button', [['class', cartValidationClass]], 'Valider mon panier', totalPriceClass);
+const cartValidation = new cardElement('input', [['type', 'submit'], ['value', 'Valider mon panier'], ['class', cartValidationClass]], '', totalPriceClass);
 

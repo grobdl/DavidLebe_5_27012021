@@ -38,6 +38,12 @@ dbGetList.onreadystatechange = function () {
     }
 };
 
+dbPost.onreadystatechange = function () {
+    if(this.readyState == 4 && this.status == 200){
+        var response = JSON.parse(this.responseText);
+    }
+}
+
 switch(idPageValue){
     case 'index':
     //requête récupération

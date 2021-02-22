@@ -16,7 +16,8 @@ var listenOperateButton = function(){
     if(idPageValue == 'shoppingCart'){
         const cartValidateButton = document.getElementsByClassName(cartValidationClass);
         cartValidateButton[0].addEventListener('click', function(){
-            window.location.href= 'shipping.html';
+            const shippingObject = cartObject();
+            const cartArray = cartListArray(shoppingCart.orderMap);
         })
     }
     console.log('Fin de boucle');
