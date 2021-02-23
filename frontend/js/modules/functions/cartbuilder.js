@@ -32,7 +32,7 @@ var cartObject = function(){
 }
 
 var cartListArray = function(orderMap){
-    var orderArray= [];
+    var orderArray= new Array();
     for(const [key, value] of orderMap){
         orderArray.push(key);
     }

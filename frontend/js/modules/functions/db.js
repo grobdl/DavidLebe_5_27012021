@@ -40,9 +40,18 @@ dbGetList.onreadystatechange = function () {
 
 dbPost.onreadystatechange = function () {
     if(this.readyState == 4 && this.status == 200){
+        console.log('post chargé');
         var response = JSON.parse(this.responseText);
+        console.log('Ok: ' + this.readyState + ' ' + this.status);
+        console.log(this.statusText);
+    }
+    else{
+        console.log('Erreur ReadyState: ' + this.readyState);
+        console.log('Erreur Status: ' + this.status);
+        console.log(this.statusText);
     }
 }
+
 
 switch(idPageValue){
     case 'index':
