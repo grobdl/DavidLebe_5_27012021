@@ -1,6 +1,6 @@
 var cartObject = function(){
     shippingCartInfos = document.forms[0];
-    const shippingCartForm = new cartInfos();
+    const shippingCartForm = new contact();
     for(let i in shippingCartInfos){
         if(shippingCartInfos[i]){
             switch(shippingCartInfos[i].name){
@@ -31,11 +31,9 @@ var cartObject = function(){
     return shippingCartForm;
 }
 
-var cartListArray = function(orderMap){
-    var orderArray= new Array();
+var cartListArray = function(orderMap, object){
+    object.products = new Array();
     for(const [key, value] of orderMap){
-        orderArray.push(key);
+        object.products.push(key);
     }
-    console.log(orderArray);
-    return orderArray;
 }

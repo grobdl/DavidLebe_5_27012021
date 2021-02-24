@@ -16,14 +16,13 @@ var listenOperateButton = function(){
     if(idPageValue == 'shoppingCart'){
         const cartValidateButton = document.getElementsByClassName(cartValidationClass);
         cartValidateButton[0].addEventListener('click', function(){
-            const contact = cartObject();
-            const cartArray = cartListArray(shoppingCart.orderMap);
-            console.log(cartArray);
-            const postJSON = 'contact: ' + JSON.stringify(contact) + 'products: ' + cartArray;
-            console.log(postJSON);
+            const cartShip = new cartInfos();
+            cartListArray(shoppingCart.orderMap, cartShip);
+            cartShip.contact = cartObject();
+            console.log(JSON.stringify(cartShip));
             dbPost.open('POST', 'http://localhost:3000/api/cameras/order');
             dbPost.setRequestHeader('Content-type', 'application/json');
-            dbPost.send(postJSON);
+            dbPost.send(JSON.stringify(cartShip));
         })
     }
     console.log('Fin de boucle');
