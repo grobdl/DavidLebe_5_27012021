@@ -17,7 +17,7 @@ var cartObject = function(){
                 break;
                 
                 case 'adresse':
-                    shippingCartForm.adress = shippingCartInfos[i].value;
+                    shippingCartForm.address = shippingCartInfos[i].value;
                 break;
                 
                 case 'ville':

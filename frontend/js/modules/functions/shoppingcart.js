@@ -1,10 +1,3 @@
-var localStorageUpdate = function(){
-    shoppingCart.orderMap = Array.from(shoppingCart.orderMap);
-    const cartString = JSON.stringify(shoppingCart);
-    shoppingCart.orderMap = new Map(shoppingCart.orderMap);
-    localStorage.setItem('cart', cartString);
-}
-
 var quantityRecover = function(id){
     var qty = 'Qty';
     console.log('qtyRecover id:' + id);
@@ -30,15 +23,15 @@ var cartUpdater = function(){
             case 0:
                 console.log('Map vide');
                 cartDisplay.innerHTML = 'Panier Vide';
-                localStorageUpdate();
+                localStorageCartUpdate();
                 break;
             case 1: 
                 cartDisplay.innerHTML = 'Mon Panier <br />1 article';
-                localStorageUpdate();
+                localStorageCartUpdate();
                 break;
             default:
                 cartDisplay.innerHTML = 'Mon Panier <br />' + shoppingCart.orderMap.size + ' articles';
-                localStorageUpdate();
+                localStorageCartUpdate();
         }
     }else{
         console.log('shoppingCart inexistant');

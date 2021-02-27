@@ -1,12 +1,12 @@
 const shoppingCart = new cart();
 //objets utilisés pour la construction des cartes
 if(localStorage.getItem('cart')){
-    const parse = JSON.parse(localStorage.getItem('cart'));
+    localStorageParser();
+    /*const parse = JSON.parse(localStorage.getItem('cart'));
     shoppingCart.orderMap = new Map(parse.orderMap);
-    console.log(shoppingCart.orderMap);
+    console.log(shoppingCart.orderMap);*/
 }else{
     shoppingCart.orderMap = orderMap;
-    shoppingCart.date = Date.now();
     console.log(shoppingCart.orderMap);
 }
 
@@ -24,4 +24,6 @@ const cartFreeSpace = new cardElement('div', [['class', cartFreeSpaceClass]], ''
 const cartItemDesignation = new cardElement('p', [['class', cartDesignationClass]], '', totalPriceClass);
 const cartItemPrice = new cardElement('p', [['class', cartPriceClass]], '', totalPriceClass);
 const cartValidation = new cardElement('input', [['type', 'submit'], ['value', 'Valider mon panier'], ['class', cartValidationClass]], '', totalPriceClass);
-
+const orderMessage = new cardElement('h2', [['class', orderMessageClass]], '', articleClass);
+const backToIndexDiv = new cardElement('div', [['class', backToIndexDivClass]], '', articleClass);
+const backToIndex = new cardElement('h2', [['class', backToIndexClass]], '', backToIndexDivClass);

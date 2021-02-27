@@ -15,6 +15,7 @@ var productNameClass, productPriceClass,productImageClass;
 var productDescriptionClass, buyDivClass, deleteOrderClass;
 var addOrderClass, substractOrderClass, quantityOrderClass, orderButtonClass;
 var cartFreeSpaceClass, cartDesignationClass, cartPriceClass, cartValidationClass;
+var orderMessageClass, backToIndexClass, backToIndexDivClass;
 switch(idPageValue){
     case 'index':
         articleClass = 'article col-12 col-md-6 col-lg-4';
@@ -67,6 +68,13 @@ switch(idPageValue){
         productPriceClass = 'col-4';
         productImageClass = 'img-thumbnail';
         productDescriptionClass = '';
+    break;
+
+    case 'ordered':
+        articleClass='col-12';
+        orderMessageClass = 'col-12';
+        backToIndexDivClass = 'col-12';
+        backToIndexClass = 'col-12';
     break;
 
     default:

@@ -33,43 +33,42 @@ dbGetList.onreadystatechange = function () {
         cartUpdater();
         listenOperateButton();
         shoppingCartURL();
+        console.log('type orderMap:' + typeof shoppingCart.orderMap);
+        console.log('type orderMap:' + typeof shoppingCart);
     }else{
 
     }
 };
 
 dbPost.onreadystatechange = function () {
-    if(this.readyState == 4 && this.status == 200){
+    if(this.readyState == 4 && this.status == 201){
         console.log('post chargé');
         var response = JSON.parse(this.responseText);
-        console.log('Ok: ' + this.readyState + ' ' + this.status);
-        console.log(this.statusText);
-    }
-    else{
-        console.log('Erreur ReadyState: ' + this.readyState);
-        console.log('Erreur Status: ' + this.status);
-        console.log(this.statusText);
+        shoppingCart.orderId = response.orderId;
+        console.log('shoppingCart');
+        console.log(shoppingCart);
+        localStorageOrder();
+        window.location.href= 'shipping.html';
     }
 }
 
 
 switch(idPageValue){
     case 'index':
+    case 'shoppingCart':
+    case  'product':
     //requête récupération
     dbGetList.open('GET', 'http://localhost:3000/api/cameras');
     dbGetList.send();
     break;
 
-    case 'shoppingCart':
-    dbGetList.open('GET', 'http://localhost:3000/api/cameras');
-    dbGetList.send();
+    case 'ordered':
+        elementBuilder(bloc, 0, '');
+        elementBuilder(orderMessage, 0, '');
+        elementBuilder(backToIndex, 0, '');
+
     break;
 
-    case 'product':
-    dbGetList.open('GET', 'http://localhost:3000/api/cameras');
-    dbGetList.send();
-    break
-
     default:
-        console.log('Erreur: ' + mainId[0]);
+        console.log('Erreur switch: ' + mainId[0]);
 }

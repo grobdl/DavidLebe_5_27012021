@@ -1,10 +1,11 @@
 
 //Classe Panier
 class cart{
-    constructor(orderId, userId, date, orderMap){
+    constructor(orderId, date, total, orderMap, contact){
         this.orderId = orderId;
-        this.userId = userId;
         this.date = date;
+        this.total = total;
         this.orderMap = orderMap;
+        this.contact = contact;
     }
 }

@@ -53,6 +53,7 @@ var elementBuilder = function(elementType, position, id){
 
             case 'Prix Total: ':
             contentValue= orderTotalPrice;
+            shoppingCart.total = contentValue;
             orderTotalPrice = 0;
             break;
 

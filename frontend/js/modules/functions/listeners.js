@@ -19,9 +19,11 @@ var listenOperateButton = function(){
             const cartShip = new cartInfos();
             cartListArray(shoppingCart.orderMap, cartShip);
             cartShip.contact = cartObject();
-            console.log(JSON.stringify(cartShip));
+            shoppingCart.contact = cartObject();
+            shoppingCart.date = Date.now();
+            console.log(cartShip);
             dbPost.open('POST', 'http://localhost:3000/api/cameras/order');
-            dbPost.setRequestHeader('Content-type', 'application/json');
+            dbPost.setRequestHeader('content-type', 'application/json');
             dbPost.send(JSON.stringify(cartShip));
         })
     }
@@ -93,7 +95,7 @@ var shoppingCartURL = function(){
         if(shoppingCart.orderMap.size == 0 || window.location.href == 'http://127.0.0.1:5500/oc_p5_projet/frontend/shoppingcart.html'){
             event.preventDefault();
         }else{
-            localStorageUpdate();
+            localStorageCartUpdate();
         }
     });
 }
