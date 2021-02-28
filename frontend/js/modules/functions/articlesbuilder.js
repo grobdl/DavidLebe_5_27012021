@@ -19,8 +19,6 @@ var cartBuilder = function(position){
 
 var elementBuilder = function(elementType, position, id){
     const element = document.createElement(elementType.type);
-    console.log('elementType: ');
-    console.log(elementType);
     for(const [key, value] of elementType.attributeMap){
         element.setAttribute(key, value);
     }
@@ -61,8 +59,6 @@ var elementBuilder = function(elementType, position, id){
             contentValue= cartItems.get(id);
             orderTotalPrice += contentValue;
         }
-        console.log('contentValue: ' + contentValue);
-        console.log('orderTotalPrice: ' + orderTotalPrice);
         elementType.content= contentValue + ' €';
     }
     if(elementType.content != ''){
@@ -110,7 +106,6 @@ var orderBuilder = function(position, id, reOrder){
         const orderParents = document.getElementsByClassName(buyDivClass);
         const orderParent = orderParents[position].getElementsByTagName('*');
         let nodeList = orderParent.length - 1;
-        console.log(nodeList);
         while(nodeList >= 0){
             orderParent[nodeList].remove();
             nodeList--;
@@ -129,17 +124,13 @@ var orderBuilder = function(position, id, reOrder){
 var alreadyOrdered = function(id){
     var retour = false;
     if(shoppingCart.orderMap.size > 0){
-        console.log('AlreadyOrdered, orderMap existe');
         for(const [key, value] of shoppingCart.orderMap){
             if(key == id){
                 retour = true;
-                console.log('AlreadyOrdered true pour: ' + id);
             }else{
-                console.log('AlreadyOrdered false: Pas de correspondance dans le panier')
             }
         }
     }else{
-        console.log('AlreadyOrdered, orderMap vide');
     }
     return retour;
 }

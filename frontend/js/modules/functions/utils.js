@@ -21,8 +21,6 @@ var URLParam = function(){
 }
 
 var parentFinder = function(position, parentClassName){
-    console.log('parentFinder position: ' + position);
-    console.log('parentFinder parentClassName: ' + parentClassName);
     const parentsList = document.getElementsByClassName(parentClassName);
     var parent;
     if(parentsList.length > 1){
@@ -38,4 +36,48 @@ var numberRounder = function(value, precision){
     result = value*operateur;
     roundedResult = Math.round(result, 2)/100;
     return roundedResult;
+}
+
+var formRegex = function(id){
+    const lettersRegex = /[A-Za-zéèêàùçîï\-\\\s]{2,}/;
+    const adresseRegex = /[0-9A-Za-zéèêàùçîï\-\\\s\,\.]{2,}/;
+    const mailRegex = /^[a-z0-9][0-9a-z\-\_\.]{2,}[a-z0-9]@[a-z0-9]{1}[0-9a-z\-]{1,}[a-z0-9].[a-z]{2,6}$/;
+    var retour = false;
+    const input = document.getElementById(id);
+    const attribute = input.getAttribute('name');
+    const content = input.value;
+    switch (attribute){
+        case 'name':
+        case 'surName':
+        case 'ville':
+        if(content.match(lettersRegex)){
+            retour = true;
+        }
+        break;
+
+        case 'mail':
+        if(content.match(mailRegex)){
+            retour = true;
+        }
+        break;
+
+        case 'adresse':
+        if(content.match(adresseRegex)){
+            retour = true;
+        }
+        break;
+    }
+    return retour;
+}
+
+var formAnswers = function(){
+    var total = 0;
+    for(let count in formListenersAnswers){
+        total += formListenersAnswers[count];
+    }
+    if(total == formListenersAnswers.length){
+        return true;
+    }else{
+        return false;
+    }
 }

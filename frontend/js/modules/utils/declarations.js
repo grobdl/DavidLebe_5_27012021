@@ -2,12 +2,8 @@ const shoppingCart = new cart();
 //objets utilisés pour la construction des cartes
 if(localStorage.getItem('cart')){
     localStorageParser();
-    /*const parse = JSON.parse(localStorage.getItem('cart'));
-    shoppingCart.orderMap = new Map(parse.orderMap);
-    console.log(shoppingCart.orderMap);*/
 }else{
     shoppingCart.orderMap = orderMap;
-    console.log(shoppingCart.orderMap);
 }
 
 //constantes index
@@ -23,7 +19,22 @@ const cartOrderPrice = new cardElement('article', [['class', totalPriceClass]], 
 const cartFreeSpace = new cardElement('div', [['class', cartFreeSpaceClass]], '', totalPriceClass);
 const cartItemDesignation = new cardElement('p', [['class', cartDesignationClass]], '', totalPriceClass);
 const cartItemPrice = new cardElement('p', [['class', cartPriceClass]], '', totalPriceClass);
-const cartValidation = new cardElement('input', [['type', 'submit'], ['value', 'Valider mon panier'], ['class', cartValidationClass]], '', totalPriceClass);
-const orderMessage = new cardElement('h2', [['class', orderMessageClass]], '', articleClass);
+const cartValidation = new cardElement('input', [['type', 'submit'],['id', 'formValidate'], ['disabled', 'true'], ['value', 'Valider mon panier'], ['class', cartValidationClass]], '', totalPriceClass);
+const orderThanksMessage = new cardElement('h2', [['class', orderThanksMessageClass]], 'Commande Validée! <br /> Merci pour votre confiance!', articleClass);
+const orderNumberDesignation = new cardElement('p', [['class', orderDesignationClass]], 'N° de commande: ', articleClass);
+const orderNumber = new cardElement('p', [['class', orderItemClass]], shoppingCart.orderId, articleClass);
+const orderTotalDesignation = new cardElement('p', [['class', orderDesignationClass]], 'Prix total TTC', articleClass);
+const orderTotal = new cardElement('p', [['class', orderItemClass]], shoppingCart.total + ' €', articleClass);
 const backToIndexDiv = new cardElement('div', [['class', backToIndexDivClass]], '', articleClass);
-const backToIndex = new cardElement('h2', [['class', backToIndexClass]], '', backToIndexDivClass);
+const backToIndex = new cardElement('button', [['class', backToIndexClass]], 'Retour à la boutique', backToIndexDivClass);
+
+//Promesses
+let validateForm = new Promise((resolve) => {
+    
+});
+
+validateForm.then(
+    function(value) {console.log(value);},
+    function(error) {console.log(error);}
+        //document.getElementById('formValidate').removeAttribute('disabled');
+);

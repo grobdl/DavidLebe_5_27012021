@@ -3,6 +3,7 @@
 var dbGetList = new XMLHttpRequest();
 var dbPost = new XMLHttpRequest();
 var cameras= [];
+var formListenersAnswers = [0, 0, 0, 0, 0];
 var cartItems = new Map([['Total Panier: ', 0], ['Frais de Transport: ', 30], ['Dont TVA 20%: ', 0], ['Prix Total: ', 0]]);
 const pageCheck = 'main';
 var orderTotalPrice = 0;
@@ -15,7 +16,7 @@ var productNameClass, productPriceClass,productImageClass;
 var productDescriptionClass, buyDivClass, deleteOrderClass;
 var addOrderClass, substractOrderClass, quantityOrderClass, orderButtonClass;
 var cartFreeSpaceClass, cartDesignationClass, cartPriceClass, cartValidationClass;
-var orderMessageClass, backToIndexClass, backToIndexDivClass;
+var orderThanksMessageClass, orderDesignationClass, orderItemClass, backToIndexClass, backToIndexDivClass;
 switch(idPageValue){
     case 'index':
         articleClass = 'article col-12 col-md-6 col-lg-4';
@@ -71,12 +72,13 @@ switch(idPageValue){
     break;
 
     case 'ordered':
-        articleClass='col-12';
-        orderMessageClass = 'col-12';
-        backToIndexDivClass = 'col-12';
-        backToIndexClass = 'col-12';
+        articleClass= 'article col-12 d-flex flex-wrap';
+        orderThanksMessageClass = 'h2 col-12 text-center';
+        orderDesignationClass = 'p col-6 text-right';
+        orderItemClass = 'p col-6 text-left';
+        backToIndexDivClass = 'div col-12 text-center';
+        backToIndexClass = 'p col-3';
     break;
 
     default:
-        console.log('pouet');
 }

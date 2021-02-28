@@ -27,7 +27,6 @@ var cartObject = function(){
             }
         }
     }
-    console.log(shippingCartForm);
     return shippingCartForm;
 }
 

@@ -32,9 +32,8 @@ dbGetList.onreadystatechange = function () {
         }
         cartUpdater();
         listenOperateButton();
+        formListeners();
         shoppingCartURL();
-        console.log('type orderMap:' + typeof shoppingCart.orderMap);
-        console.log('type orderMap:' + typeof shoppingCart);
     }else{
 
     }
@@ -42,11 +41,8 @@ dbGetList.onreadystatechange = function () {
 
 dbPost.onreadystatechange = function () {
     if(this.readyState == 4 && this.status == 201){
-        console.log('post chargé');
         var response = JSON.parse(this.responseText);
         shoppingCart.orderId = response.orderId;
-        console.log('shoppingCart');
-        console.log(shoppingCart);
         localStorageOrder();
         window.location.href= 'shipping.html';
     }
@@ -64,11 +60,16 @@ switch(idPageValue){
 
     case 'ordered':
         elementBuilder(bloc, 0, '');
-        elementBuilder(orderMessage, 0, '');
+        elementBuilder(orderThanksMessage, 0, '');
+        elementBuilder(orderNumberDesignation, 0, '');
+        elementBuilder(orderNumber, 0, '');
+        elementBuilder(orderTotalDesignation, 0, '');
+        elementBuilder(orderTotal, 0, '');
+        elementBuilder(backToIndexDiv, 0, '');
         elementBuilder(backToIndex, 0, '');
+        listenOperateButton();
 
     break;
 
     default:
-        console.log('Erreur switch: ' + mainId[0]);
 }

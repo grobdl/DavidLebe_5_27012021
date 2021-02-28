@@ -27,5 +27,5 @@ var localStorageParser = function(){
         }
         shoppingCart[property] = parse[property];
     }
-    console.log(shoppingCart);
+    localStorage.clear();
 }

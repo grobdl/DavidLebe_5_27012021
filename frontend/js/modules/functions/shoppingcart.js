@@ -1,18 +1,15 @@
 var quantityRecover = function(id){
     var qty = 'Qty';
-    console.log('qtyRecover id:' + id);
     if(shoppingCart.orderMap){
         const cartMap = shoppingCart.orderMap;
         for (const [key, value] of  cartMap){
             if(key == id){
                 qty = value;
             }else{
-                console.log('id non reconnu');
             }
         }
         return qty;
     }else{
-        console.log('map non reconnue');
     }
 }
 
@@ -21,7 +18,6 @@ var cartUpdater = function(){
     if(shoppingCart){
         switch(shoppingCart.orderMap.size){
             case 0:
-                console.log('Map vide');
                 cartDisplay.innerHTML = 'Panier Vide';
                 localStorageCartUpdate();
                 break;
@@ -34,7 +30,6 @@ var cartUpdater = function(){
                 localStorageCartUpdate();
         }
     }else{
-        console.log('shoppingCart inexistant');
         cartDisplay.innerHTML = 'Panier Vide';
     }
 }
