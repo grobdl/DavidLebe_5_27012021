@@ -27,14 +27,3 @@ const orderTotalDesignation = new cardElement('p', [['class', orderDesignationCl
 const orderTotal = new cardElement('p', [['class', orderItemClass]], shoppingCart.total + ' €', articleClass);
 const backToIndexDiv = new cardElement('div', [['class', backToIndexDivClass]], '', articleClass);
 const backToIndex = new cardElement('button', [['class', backToIndexClass]], 'Retour à la boutique', backToIndexDivClass);
-
-//Promesses
-let validateForm = new Promise((resolve) => {
-    
-});
-
-validateForm.then(
-    function(value) {console.log(value);},
-    function(error) {console.log(error);}
-        //document.getElementById('formValidate').removeAttribute('disabled');
-);

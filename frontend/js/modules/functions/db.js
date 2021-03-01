@@ -68,6 +68,7 @@ switch(idPageValue){
         elementBuilder(backToIndexDiv, 0, '');
         elementBuilder(backToIndex, 0, '');
         listenOperateButton();
+        shoppingCartURL();
 
     break;
 

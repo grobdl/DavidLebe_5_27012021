@@ -106,12 +106,14 @@ var formListeners = function(){
                     if(formRegex(formInputs[count].getAttribute('id'))){
                         formListenersAnswers[count] = 1;
                     }
+                    if(formAnswers() && shoppingCart.orderMap.size > 0){
+                        document.getElementById('formValidate').removeAttribute('disabled');
+                    }
                 });
             }
         }
     } 
     
 }
-
 
 
