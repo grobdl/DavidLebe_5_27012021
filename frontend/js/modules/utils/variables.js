@@ -10,7 +10,7 @@ var orderTotalPrice = 0;
 var mainId = document.getElementsByTagName(pageCheck);
 const idPageValue = mainId[0].getAttribute('id');
 const orderMap= new Map;
-const sectionClass = idPageValue + ' row';
+const sectionClass = idPageValue + ' row d-flex justify-content-around';
 var articleClass, totalPriceClass, productDivClass, moreInfoClass;
 var productNameClass, productPriceClass,productImageClass;
 var productDescriptionClass, buyDivClass, deleteOrderClass;
@@ -19,40 +19,40 @@ var cartFreeSpaceClass, cartDesignationClass, cartPriceClass, cartValidationClas
 var orderThanksMessageClass, orderDesignationClass, orderItemClass, backToIndexClass, backToIndexDivClass;
 switch(idPageValue){
     case 'index':
-        articleClass = 'article col-12 col-md-6 col-lg-4';
-        productDivClass = 'productDiv d-flex flex-wrap';
-        moreInfoClass = 'moreInfo col-12 text-right';
-        buyDivClass = 'buyDiv d-flex flex-wrap justify-content-center';
+        articleClass = 'article col-12 col-md-5 col-lg-4 h-100 m-2 card';
+        productDivClass = 'productDiv d-flex flex-wrap h-80 justify-content-end position-relative';
+        moreInfoClass = 'moreInfo text-right stretched-link';
+        buyDivClass = 'buyDiv d-flex flex-wrap justify-content-center h-20';
         deleteOrderClass = 'delete col-3';
         addOrderClass = 'add col-3';
         substractOrderClass = 'substract col-3';
         quantityOrderClass = 'quantity col-3';
         orderButtonClass = 'firstOrder col-12';
-        productNameClass = 'col-8';
-        productPriceClass = 'col-4';
-        productImageClass = 'img-thumbnail';
+        productNameClass = 'col-12';
+        productPriceClass = 'col-12 text-right';
+        productImageClass = 'col-12 mx-0 px-0';
         productDescriptionClass = '';
     break;
 
     case 'shoppingCart':
         articleClass = 'article col-12 d-flex flex-wrap';
-        totalPriceClass = 'total col-12 d-flex flex-wrap justify-content-end'
-        productDivClass = 'productDiv d-flex flex-wrap flex-column';
+        productDivClass = 'productDiv col-8 d-flex flex-wrap flex-column h-100';
         moreInfoClass = 'd-none';
-        buyDivClass = 'buyDiv d-flex flex-wrap justify-content-center';
-        deleteOrderClass = 'delete col-2';
-        addOrderClass = 'add col-2';
-        substractOrderClass = 'substract col-2';
-        quantityOrderClass = 'quantity col-2';
+        buyDivClass = 'buyDiv col-4 h-100 d-flex flex-wrap align-items-center';
+        deleteOrderClass = 'delete col-12 h-25';
+        addOrderClass = 'add col-4 h-25';
+        substractOrderClass = 'substract col-4 h-25';
+        quantityOrderClass = 'quantity col-4 h-25 text-center m-0';
         orderButtonClass = 'firstOrder col-12';
-        productNameClass = 'col-4';
-        productPriceClass = 'col-4';
-        productImageClass = 'col-2';
+        productNameClass = 'col-4 h-50';
+        productPriceClass = 'col-4 h-50';
+        productImageClass = 'col-4 h-100';
         productDescriptionClass = 'd-none';
         cartFreeSpaceClass = 'col-6'
         cartDesignationClass = 'col-3';
         cartPriceClass = 'price col-3 text-right';
         cartValidationClass= 'cartValidate col-6';
+        totalPriceClass = 'total col-12 d-flex flex-wrap justify-content-end'
     break;
 
     case 'product':

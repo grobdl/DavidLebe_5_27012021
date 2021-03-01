@@ -1,33 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-    <title>Orinoco, vos enseignes spécialisées</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+        
+        <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <link rel="stylesheet" href="./style/style.css">
+        <title>Orinoco, vos enseignes spécialisées</title>
+    </head>
 <body>
     <header class="container-fluid mx-0 px-0">
-        <nav class="row navbar navbar-expand">
-            <div class="col-4">
-                <a class="navbar-brand" href="index.html"><img src="./public/img/logoFull.png"/></a>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="index.html"><img src="./public/img/logoFull.png"/></a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index.html" id='productLink'>Nos produits</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="shoppingcart.html" id="cartLink">Votre panier</a>
+                    </li>
+                </ul>
+              </div>
             </div>
-            <ul class="col-8 navbar-nav d-flex justify-content-end">
-               <li class="nav-item active">
-                  <a class="nav-link" href="index.html" id='productLink'>Nos produits</a>
-               </li>
-               <li class="nav-item">
-                  <a class="nav-link" href="shoppingcart.html" id="cartLink">Votre panier</a>
-               </li>
-            </ul>
-        </nav>
+          </nav>    
+        <!--<nav class="col navbar navbar-expand-lg">
+                <a class="navbar-brand" href=""></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div id="navbarContent" class="collapse navbar-collapse"></div>
+                    <ul class="navbar-nav">
+                        
+                    </ul>
+                </div>
+            </nav>-->
+        
     </header>
     <main id="index">
         <div class="container-fluid">
-            <section class="index row">
+            <section class="index row d-flex justify-content-around">
             </section>
         </div>
     </main>
