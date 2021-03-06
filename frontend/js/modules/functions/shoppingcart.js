@@ -18,15 +18,15 @@ var cartUpdater = function(){
     if(shoppingCart){
         switch(shoppingCart.orderMap.size){
             case 0:
-                cartDisplay.innerHTML = 'Panier Vide';
+                cartDisplay.innerHTML = '<i class="fas fa-cart-arrow-down fa-2x"></i><br />Panier Vide';
                 localStorageCartUpdate();
                 break;
             case 1: 
-                cartDisplay.innerHTML = 'Mon Panier <br />1 article';
+                cartDisplay.innerHTML = '<i class="fas fa-cart-arrow-down fa-2x"></i><br />1 article';
                 localStorageCartUpdate();
                 break;
             default:
-                cartDisplay.innerHTML = 'Mon Panier <br />' + shoppingCart.orderMap.size + ' articles';
+                cartDisplay.innerHTML = '<i class="fas fa-cart-arrow-down fa-2x"></i><br />' + shoppingCart.orderMap.size + ' articles';
                 localStorageCartUpdate();
         }
     }else{

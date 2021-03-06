@@ -82,7 +82,7 @@ var contentBuilder = function(product, position, idPageValue){
             break;
 
             case 'imageURL':
-            const productImage = new cardElement('img', [['class', productImageClass], ['src', product.imageURL]], '', productDivClass);
+            const productImage = new cardElement('img', [['class', productImageClass], ['src', product.imageURL]], '', articleClass);
             elementBuilder(productImage, position, idPageValue);
             break;
 
@@ -97,7 +97,7 @@ var contentBuilder = function(product, position, idPageValue){
             default:
           }
       }
-      const moreInfo = new cardElement('a', [['class', moreInfoClass], ['href', 'produit.html?_id=' + product._id]], 'Plus de détails', productDivClass);
+      const moreInfo = new cardElement('a', [['class', moreInfoClass], ['href', 'produit.html?_id=' + product._id]], 'Détails', productDivClass);
       elementBuilder(moreInfo, position, idPageValue);  
 }
 

@@ -1,58 +1,38 @@
 <!DOCTYPE html>
 <html lang="fr">
-
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./style/style.css">
+        <script src="https://kit.fontawesome.com/1621ab57f4.js" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-        <link rel="stylesheet" href="./style/style.css">
+        
         <title>Orinoco, vos enseignes spécialisées</title>
     </head>
 <body>
-    <header class="container-fluid mx-0 px-0">
-        <nav class="navbar navbar-expand-md navbar-light bg-light">
-            <div class="container-fluid">
-              <a class="navbar-brand" href="index.html"><img src="./public/img/logoFull.png"/></a>
-              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html" id='productLink'>Nos produits</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="shoppingcart.html" id="cartLink">Votre panier</a>
-                    </li>
-                </ul>
-              </div>
-            </div>
-          </nav>        
-    </header>
-    </header>
+    <div w3-include-html="./htmlincludes/header.html"></div>
     <main id="shoppingCart">
-        <div class="container">
-            <form method="post" action="#" class="form row d-flex justify-content-around">
-                <fieldset class="col-12 col-md-6">
+        <div class="container px-0">
+            <form method="post" action="#" class="form row d-flex justify-content-between mb-3">
+                <fieldset class="col-12 col-md-5 form-group shadow py-2">
                     <legend>Vos coordonnées</legend>  
-                    <label for="name" class="col-6">Votre nom:</label>
-                    <input type="text" name="name" class="col-3" id="name"/>
-                    <label for="surName" class="col-6">Votre prénom:</label>   
-                    <input type="text" name="surName" class="col-3" id="surName"/>
-                    <label for="mail" class="col-6">Votre e-mail:</label>   
-                    <input type="email" name="mail" class="col-3" id="mail"/>
+                    <label for="name" class="col-3">Nom:</label>
+                    <input type="text" name="name" class="col-8" id="name"/>
+                    <label for="surName" class="col-3">Prénom:</label>   
+                    <input type="text" name="surName" class="col-8" id="surName"/>
+                    <label for="mail" class="col-3">Email:</label>   
+                    <input type="email" name="mail" class="col-8" id="mail"/>
                 </fieldset>
-                <fieldset class="col-12 col-md-6">
+                <fieldset class="col-12 col-md-6 form-group shadow py-2">
                     <legend>Adresse de livraison</legend>
-                    <label for="adresse" class="col-12">Adresse:</label>   
-                    <input type="text" name="adresse" class="col-12" id="adresse"/>
-                    <label for="ville" class="col-6">Ville:</label>   
-                    <input type="text" name="ville" class="col-4" id="ville"/>
+                    <label for="adresse" class="col-3">Adresse:</label>   
+                    <input type="text" name="adresse" class="col-8" id="adresse"/>
+                    <label for="ville" class="col-3">Ville:</label>   
+                    <input type="text" name="ville" class="col-8" id="ville"/>
                 </fieldset>
             </form>
-            <section class="shoppingCart row d-flex justify-content-around">
+            <section class="shoppingCart row d-flex justify-content-end">
             </section>
         </div>
     </main>

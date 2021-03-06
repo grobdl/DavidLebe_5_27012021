@@ -39,7 +39,7 @@ var numberRounder = function(value, precision){
 }
 
 var formRegex = function(id){
-    const lettersRegex = /[A-Za-zéèêàùçîï\-\\\s]{2,}/;
+    const lettersRegex = /[A-Za-zéèêàùçîï\-\\\s]{1,}/;
     const adresseRegex = /[0-9A-Za-zéèêàùçîï\-\\\s\,\.]{2,}/;
     const mailRegex = /^[a-z0-9][0-9a-z\-\_\.]{2,}[a-z0-9]@[a-z0-9]{1}[0-9a-z\-]{1,}[a-z0-9].[a-z]{2,6}$/;
     var retour = false;
