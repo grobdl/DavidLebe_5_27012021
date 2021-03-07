@@ -1,3 +1,4 @@
+//Crée l'objet contact à intégrer dans l'objet cartInfos
 var cartObject = function(){
     shippingCartInfos = document.forms[0];
     const shippingCartForm = new contact();
@@ -30,6 +31,7 @@ var cartObject = function(){
     return shippingCartForm;
 }
 
+//Crée un array à intégrer dans l'objet cartLink
 var cartListArray = function(orderMap, object){
     object.products = new Array();
     for(const [key, value] of orderMap){

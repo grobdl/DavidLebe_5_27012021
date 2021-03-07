@@ -1,3 +1,6 @@
+//Crée l'objet shoppingCart contenant toutes les informations du panier en cours.
+//Si localStorage est informé, récupère les données pour en informer l'objet
+//Si localStorage est vide, crée shoppingCart vierge.
 const shoppingCart = new cart();
 //objets utilisés pour la construction des cartes
 if(localStorage.getItem('cart')){
@@ -6,7 +9,7 @@ if(localStorage.getItem('cart')){
     shoppingCart.orderMap = orderMap;
 }
 
-//constantes index
+//constantes d'éléments à créer
 const bloc = new cardElement('article', [['class', articleClass]], '', sectionClass);
 const productInfoDiv = new cardElement('div', [['class', productDivClass]], '', articleClass);
 const buyDiv = new cardElement('div', [['class', buyDivClass]], '', articleClass);
@@ -21,6 +24,8 @@ const cartItemDesignation = new cardElement('p', [['class', cartDesignationClass
 const cartItemPrice = new cardElement('p', [['class', cartPriceClass]], '', totalPriceClass);
 const cartValidation = new cardElement('input', [['type', 'submit'],['id', 'formValidate'], ['disabled', 'true'], ['value', 'Valider mon panier'], ['class', cartValidationClass]], '', totalPriceClass);
 const orderThanksMessage = new cardElement('h2', [['class', orderThanksMessageClass]], 'Commande Validée! <br /> Merci pour votre confiance!', articleClass);
+const noOrderMessage = new cardElement('h2', [['class', noOrderMessageClass]], 'Pas de commande en cours', articleClass);
+const noIdMessage = new cardElement('h2', [['class', noIdMessageClass]], 'Ce produit n\'existe pas', articleClass);
 const orderNumberDesignation = new cardElement('p', [['class', orderDesignationClass]], 'N° de commande: ', articleClass);
 const orderNumber = new cardElement('p', [['class', orderItemClass]], shoppingCart.orderId, articleClass);
 const orderTotalDesignation = new cardElement('p', [['class', orderDesignationClass]], 'Prix total TTC', articleClass);

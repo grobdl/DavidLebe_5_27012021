@@ -13,23 +13,23 @@
 <body>
     <div w3-include-html="./htmlincludes/header.html"></div>
     <main id="shoppingCart">
-        <div class="container px-0">
+        <div class="container">
             <form method="post" action="#" class="form row d-flex justify-content-between mb-3">
                 <fieldset class="col-12 col-md-5 form-group shadow py-2">
                     <legend>Vos coordonnées</legend>  
-                    <label for="name" class="col-3">Nom:</label>
-                    <input type="text" name="name" class="col-8" id="name"/>
-                    <label for="surName" class="col-3">Prénom:</label>   
-                    <input type="text" name="surName" class="col-8" id="surName"/>
-                    <label for="mail" class="col-3">Email:</label>   
-                    <input type="email" name="mail" class="col-8" id="mail"/>
+                    <label for="name" class="col-3 col-md-5 col-lg-3">Nom:</label>
+                    <input type="text" name="name" class="col-8 col-md-6 col-lg-8" id="name"/>
+                    <label for="surName" class="col-3 col-md-5 col-lg-3">Prénom:</label>   
+                    <input type="text" name="surName" class="col-8 col-md-6 col-lg-8" id="surName"/>
+                    <label for="mail" class="col-3 col-md-5 col-lg-3">Email:</label>   
+                    <input type="email" name="mail" class="col-8 col-md-6 col-lg-8" id="mail"/>
                 </fieldset>
                 <fieldset class="col-12 col-md-6 form-group shadow py-2">
                     <legend>Adresse de livraison</legend>
-                    <label for="adresse" class="col-3">Adresse:</label>   
-                    <input type="text" name="adresse" class="col-8" id="adresse"/>
-                    <label for="ville" class="col-3">Ville:</label>   
-                    <input type="text" name="ville" class="col-8" id="ville"/>
+                    <label for="adresse" class="col-3 col-md-4 col-lg-3">Adresse:</label>   
+                    <input type="text" name="adresse" class="col-8 col-md-7 col-lg-8" id="adresse"/>
+                    <label for="ville" class="col-3 col-md-4 col-lg-3">Ville:</label>   
+                    <input type="text" name="ville" class="col-8 col-md-7 col-lg-8" id="ville"/>
                 </fieldset>
             </form>
             <section class="shoppingCart row d-flex justify-content-end">
@@ -37,6 +37,7 @@
         </div>
     </main>
 </body>
+<script src="./js/includeHTML.js"></script>
 <script src='./js/modules/classes/cardelement.js'></script>
 <script src='./js/modules/classes/shipinfos.js'></script>
 <script src='./js/modules/classes/cart.js'></script>
@@ -52,5 +53,4 @@
 <script src='./js/modules/utils/declarations.js'></script>
 <script src='./js/modules/functions/db.js'></script>
 <!--<div w3-include-html="scripts.html"></div>-->
-<script src="./js/includeHTML.js"></script>
 </html>

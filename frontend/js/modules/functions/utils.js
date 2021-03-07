@@ -14,12 +14,14 @@ var objectBuilder = function(jsonObject){
     }
 };
 
+//retourne la valeur de l'identifiant transmise par URL
 var URLParam = function(){
     const URLParam = new URLSearchParams(window.location.search);
     const paramValue = URLParam.get('_id');
     return paramValue;
 }
 
+//Récupère l'élément parent en fonction du contenu du paramètre class
 var parentFinder = function(position, parentClassName){
     const parentsList = document.getElementsByClassName(parentClassName);
     var parent;
@@ -31,6 +33,7 @@ var parentFinder = function(position, parentClassName){
     return parent;
 }
 
+//Arrondi une valeur décimale à deux chiffres après la virgule maximum
 var numberRounder = function(value, precision){
     operateur = Math.pow(10, precision);
     result = value*operateur;
@@ -38,6 +41,7 @@ var numberRounder = function(value, precision){
     return roundedResult;
 }
 
+//Vérifie le contenu des champs du formulaire à l'aide de regex
 var formRegex = function(id){
     const lettersRegex = /[A-Za-zéèêàùçîï\-\\\s]{1,}/;
     const adresseRegex = /[0-9A-Za-zéèêàùçîï\-\\\s\,\.]{2,}/;
@@ -70,6 +74,7 @@ var formRegex = function(id){
     return retour;
 }
 
+//Vérifie si toutes les valeurs des champs du formulaire sont valides
 var formAnswers = function(){
     var total = 0;
     for(let count in formListenersAnswers){
@@ -80,4 +85,27 @@ var formAnswers = function(){
     }else{
         return false;
     }
+}
+
+//Met en avant la validité ou l'invalidité d'un champ du formulaire
+var formAssist = function(input, regexReturn){
+    var value, label, labelClass;
+    const labelArray = document.getElementsByTagName('label');
+    for(let count in labelArray){
+        console.log(labelArray[count]);
+        if(HTMLCollectionCleaner(count) && labelArray[count].getAttribute('for') == input.getAttribute('name')){
+            label = labelArray[count];
+        }
+    }
+    labelClass = labelClassValues.get(label.getAttribute('for'));
+    value = inputClassValues.get(input.getAttribute('name'));
+    if(regexReturn){
+        value += ' border border-success text-success';
+        labelClass += ' text-success';
+    }else{
+        value += ' border border-danger text-danger';
+        labelClass += ' text-danger';
+    }
+    input.setAttribute('class', value);
+    label.setAttribute('class', labelClass);
 }

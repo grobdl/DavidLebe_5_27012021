@@ -1,4 +1,4 @@
-//Classe produit
+//Classe produit, stocke les informations relatives à un produit dans un objet, à partir de la requête.
 class product{
     constructor(id, name, price, description, imageURL) {
         this._id = id;

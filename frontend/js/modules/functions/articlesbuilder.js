@@ -1,3 +1,5 @@
+//Construit les articles de présentation du produit en fonction de son identifiant. 
+//La mise en page dépend de la page sur laquelle on se trouve
 var articleBuilder = function(product, position, id, idPageValue){
     elementBuilder(bloc, position, id);
     elementBuilder(productInfoDiv, position, id);
@@ -6,6 +8,7 @@ var articleBuilder = function(product, position, id, idPageValue){
     orderBuilder(position, id, false);
 }
 
+//Dans la page de validation du panier, crée le bloc de sous-total et total du panier
 var cartBuilder = function(position){
     elementBuilder(cartOrderPrice, position);
     for(const [key, value] of cartItems){
@@ -17,6 +20,7 @@ var cartBuilder = function(position){
     elementBuilder(cartValidation, position);
 }
 
+//Construit une balise, en fonction de la position dans l'élément parent et de l'identifiant du produit (si informé)
 var elementBuilder = function(elementType, position, id){
     const element = document.createElement(elementType.type);
     for(const [key, value] of elementType.attributeMap){
@@ -68,6 +72,7 @@ var elementBuilder = function(elementType, position, id){
     elementParent.appendChild(element);
 }
 
+//Insère du contenu dans une balise
 var contentBuilder = function(product, position, idPageValue){
     for (const property in product){
         switch (property){
@@ -101,6 +106,7 @@ var contentBuilder = function(product, position, idPageValue){
       elementBuilder(moreInfo, position, idPageValue);  
 }
 
+//Construit le bloc de commande d'un produit en fonction de la quantité déjà commandée
 var orderBuilder = function(position, id, reOrder){
     if(reOrder){
         const orderParents = document.getElementsByClassName(buyDivClass);
@@ -121,6 +127,7 @@ var orderBuilder = function(position, id, reOrder){
     }
 }
 
+//Vérifie si l'identifiant du produit correspond à un produit déjà présent dans le panier
 var alreadyOrdered = function(id){
     var retour = false;
     if(shoppingCart.orderMap.size > 0){
@@ -135,6 +142,7 @@ var alreadyOrdered = function(id){
     return retour;
 }
 
+//Met à jour le bloc de commande d'un produit sur l'écoute d'un évènement mettant à jour le panier
 var orderRefresher = function(clickedButton, position, buyDiv, id){
     switch(clickedButton){
         case 'firstOrderDone':

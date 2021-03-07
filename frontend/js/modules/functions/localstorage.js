@@ -1,3 +1,4 @@
+//Fait passer la map contenant la liste des produits commandés et leur quantité dans localStorage
 var localStorageCartUpdate = function(){
     shoppingCart.orderMap = Array.from(shoppingCart.orderMap);
     const cartString = JSON.stringify(shoppingCart);
@@ -5,6 +6,7 @@ var localStorageCartUpdate = function(){
     localStorage.setItem('cart', cartString);
 }
 
+//transmet toutes les données de l'objet shoppingCart vers localStorage 
 var localStorageOrder = function(){
     for(const property in shoppingCart){
         var value = shoppingCart[property];
@@ -19,6 +21,7 @@ var localStorageOrder = function(){
     localStorage.setItem('cart', cartString);
 }
 
+//Convertit l'objet json en objet js
 var localStorageParser = function(){
     const parse = JSON.parse(localStorage.getItem('cart'));
     for (let property in parse){

@@ -1,4 +1,5 @@
-//récupère les données du serveur
+/*récupère les données du serveur, et les traite en fonction de la page visitée par l'utilisateur
+*/
 dbGetList.onreadystatechange = function () {
     if(this.readyState == 4 && this.status == 200){
         var response = JSON.parse(this.responseText);
@@ -23,10 +24,19 @@ dbGetList.onreadystatechange = function () {
             break;
 
             case 'product':
+            var idCheck = false;
             for (let i in cameras){
                 if(idPageValue == 'product' && cameras[i]._id == URLParam()){
                     articleBuilder(cameras[i], 0, cameras[i]._id, idPageValue);
+                    idCheck = true;
                 }
+            }
+            if(!idCheck){
+                elementBuilder(bloc, 0, '');
+                elementBuilder(noIdMessage, 0, '');
+                elementBuilder(backToIndexDiv, 0, '');
+                elementBuilder(backToIndex, 0, '');
+                
             }
             break;
         }
@@ -39,6 +49,8 @@ dbGetList.onreadystatechange = function () {
     }
 };
 
+
+//requête envoyant l'objet pour validation de la commande
 dbPost.onreadystatechange = function () {
     if(this.readyState == 4 && this.status == 201){
         var response = JSON.parse(this.responseText);
@@ -48,7 +60,7 @@ dbPost.onreadystatechange = function () {
     }
 }
 
-
+//Exécute le code adaptée à la page visitée
 switch(idPageValue){
     case 'index':
     case 'shoppingCart':
@@ -59,15 +71,21 @@ switch(idPageValue){
     break;
 
     case 'ordered':
-        elementBuilder(bloc, 0, '');
-        elementBuilder(orderThanksMessage, 0, '');
-        elementBuilder(orderNumberDesignation, 0, '');
-        elementBuilder(orderNumber, 0, '');
-        elementBuilder(orderTotalDesignation, 0, '');
-        elementBuilder(orderTotal, 0, '');
+        if(shoppingCart.orderMap.size > 0){
+            elementBuilder(bloc, 0, '');
+            elementBuilder(orderThanksMessage, 0, '');
+            elementBuilder(orderNumberDesignation, 0, '');
+            elementBuilder(orderNumber, 0, '');
+            elementBuilder(orderTotalDesignation, 0, '');
+            elementBuilder(orderTotal, 0, '');
+        }else{
+            elementBuilder(bloc, 0, '');
+            elementBuilder(noOrderMessage, 0, '');
+        }
         elementBuilder(backToIndexDiv, 0, '');
         elementBuilder(backToIndex, 0, '');
         listenOperateButton();
+        cartUpdater();
         shoppingCartURL();
 
     break;

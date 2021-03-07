@@ -1,3 +1,4 @@
+//Retourne la quantité commandée du produit dont l'identifiant est informé
 var quantityRecover = function(id){
     var qty = 'Qty';
     if(shoppingCart.orderMap){
@@ -13,6 +14,7 @@ var quantityRecover = function(id){
     }
 }
 
+//En fonctions du nombres d'articles différents commandés, met à jour le contenu de la balise lien vers la page panier
 var cartUpdater = function(){
     const cartDisplay = document.getElementById('cartLink');
     if(shoppingCart){
@@ -34,6 +36,7 @@ var cartUpdater = function(){
     }
 }
 
+//Calcul la valeur totale des produits commandés
 var cartValue = function(position){
     var totalPrice = 0;
     for (const [key, value] of shoppingCart.orderMap){

@@ -1,3 +1,4 @@
+//Lance les écoutes d'évènements standards et en fonction de la page visitée
 var listenOperateButton = function(){
     if(idPageValue != 'ordered'){
         const buyDiv = document.getElementsByClassName(buyDivClass);
@@ -32,7 +33,8 @@ var listenOperateButton = function(){
         break;
 
         case 'ordered':
-            const returnButton = document.getElementsByClassName('p col-3');
+        case 'product':
+            const returnButton = document.getElementsByClassName(backToIndexClass);
             returnButton[0].addEventListener('click', function(){
                 window.location.href = 'index.html';
             })
@@ -45,6 +47,7 @@ var listenOperateButton = function(){
     }
 }
 
+//Crée une écoute d'évènement pour les boutons du bloc de commande d'un produit
 var operateEvent = function(operationTypeClass, position, buyDiv, id){
     const operationButton = buyDiv.getElementsByClassName(operationTypeClass);
     for (let count in operationButton){
@@ -86,8 +89,10 @@ var operateEvent = function(operationTypeClass, position, buyDiv, id){
     }
 }
 
+//Agit sur la disponibilité du lien vers la page du panier en fonction de son remplissage
 var shoppingCartURL = function(){
     const cartLink = document.getElementById('cartLink');
+    console.log(cartLink);
     cartLink.addEventListener('click', function(event){
         if(shoppingCart.orderMap.size == 0 || window.location.href == 'http://127.0.0.1:5500/oc_p5_projet/frontend/shoppingcart.html'){
             event.preventDefault();
@@ -97,6 +102,8 @@ var shoppingCartURL = function(){
     });
 }
 
+//Vérifie le contenu du formulaire de contact pour la commande et réactive le bouton de validation de la commande
+//si et uniquement si les champs du formulaire sont valides.
 var formListeners = function(){
     if(idPageValue == 'shoppingCart'){
         const formInputs = document.getElementsByTagName('input');
@@ -105,6 +112,9 @@ var formListeners = function(){
                 formInputs[count].addEventListener('change', function(){
                     if(formRegex(formInputs[count].getAttribute('id'))){
                         formListenersAnswers[count] = 1;
+                        formAssist(formInputs[count], true);
+                    }else{
+                        formAssist(formInputs[count], false);
                     }
                     if(formAnswers() && shoppingCart.orderMap.size > 0){
                         document.getElementById('formValidate').removeAttribute('disabled');

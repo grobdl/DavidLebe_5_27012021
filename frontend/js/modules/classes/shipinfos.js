@@ -1,3 +1,4 @@
+//Classe cartInfos, englobe l'objet shoppingCart et contact
 class cartInfos{
     constructor(contact, products){
         this.contact = contact;
@@ -5,6 +6,7 @@ class cartInfos{
     }
 }
 
+//Classe contact, construit un objet à partir des données du formulaire de validation du panier.
 class contact{
     constructor(nom, prenom, email, adresse, ville){
         this.firstName = nom;
