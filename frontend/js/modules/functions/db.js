@@ -85,7 +85,7 @@ switch(idPageValue){
         elementBuilder(backToIndexDiv, 0, '');
         elementBuilder(backToIndex, 0, '');
         listenOperateButton();
-        cartUpdater();
+        //cartUpdater();
         shoppingCartURL();
 
     break;

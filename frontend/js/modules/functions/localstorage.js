@@ -23,12 +23,13 @@ var localStorageOrder = function(){
 
 //Convertit l'objet json en objet js
 var localStorageParser = function(){
-    const parse = JSON.parse(localStorage.getItem('cart'));
-    for (let property in parse){
-        if(property == 'orderMap'){
-            parse[property] = new Map(parse.orderMap);
+        const parse = JSON.parse(localStorage.getItem('cart'));
+        for (let property in parse){
+            if(property == 'orderMap'){
+                parse[property] = new Map(parse.orderMap);
+            }
+            shoppingCart[property] = parse[property];
         }
-        shoppingCart[property] = parse[property];
-    }
     localStorage.clear();
+    console.log('localStorage a été effacé');
 }
