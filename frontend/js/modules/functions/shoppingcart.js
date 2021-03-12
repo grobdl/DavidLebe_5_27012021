@@ -1,21 +1,23 @@
 //Retourne la quantité commandée du produit dont l'identifiant est informé
 var quantityRecover = function(id){
-    var qty = 'Qty';
+    var qty = 'Erreur!';
     if(shoppingCart.orderMap){
         const cartMap = shoppingCart.orderMap;
         for (const [key, value] of  cartMap){
             if(key == id){
                 qty = value;
-            }else{
             }
         }
         return qty;
-    }else{
     }
 }
 
 //En fonctions du nombres d'articles différents commandés, met à jour le contenu de la balise lien vers la page panier
 var cartUpdater = function(){
+    //Récupère l'élément dirigeant vers shoppingCart.html
+    /*En fonction du nombre d'articles différents présents dans shoppingCart.orderMap:
+    - Pas d'article: Le lien affiche "Panier vide" et est désactivé.
+    - 1 ou plusieurs articles: Le lien affiche le nombre d'articles différents commandés, et est activé*/
     const cartDisplay = document.getElementById('cartLink');
     if(shoppingCart){
         switch(shoppingCart.orderMap.size){

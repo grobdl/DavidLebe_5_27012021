@@ -1,4 +1,4 @@
-//Ecarte les items spécifiques d'une HTMLCollection
+//Retourne false si l'item de l'HTMLCollection est length, item, ou nameditem, true dans le cas contraire.
 var HTMLCollectionCleaner = function(value, parentFunction){
     if(value != 'length' && value != 'item' && value != 'namedItem'){
         return true;
@@ -7,21 +7,23 @@ var HTMLCollectionCleaner = function(value, parentFunction){
     }
 }
 
-//Génère une série d'objet à partir d'un contenu fourni
+//Génère un objet à partir du contenu de la requête.
 var objectBuilder = function(jsonObject){
     for (let i= 0; i < jsonObject.length; i++ ){
-        cameras[i] = new product(jsonObject[i]._id, jsonObject[i].name, jsonObject[i].price, jsonObject[i].description, jsonObject[i].imageUrl);
+        cameras[i] = new product(jsonObject[i]._id, jsonObject[i].name, jsonObject[i].price/100, jsonObject[i].description, jsonObject[i].imageUrl);
     }
 };
 
-//retourne la valeur de l'identifiant transmise par URL
+//extraie et retourne  l'identifiant transmise par URL
 var URLParam = function(){
     const URLParam = new URLSearchParams(window.location.search);
     const paramValue = URLParam.get('_id');
     return paramValue;
 }
 
-//Récupère l'élément parent en fonction du contenu du paramètre class
+//Récupère l'élément parent en fonction du paramètre parentClassName
+//Si un array de plusieurs éléments est retourné, récupère l'élément dont la position dans l'array vaut position.
+//Si l'array ne comporte qu'un seul élément, récupère l'élément 0 de l'array.
 var parentFinder = function(position, parentClassName){
     const parentsList = document.getElementsByClassName(parentClassName);
     var parent;
@@ -33,7 +35,7 @@ var parentFinder = function(position, parentClassName){
     return parent;
 }
 
-//Arrondi une valeur décimale à deux chiffres après la virgule maximum
+//Arrondit value à un nombre de chiffre après la virgule valant precision
 var numberRounder = function(value, precision){
     operateur = Math.pow(10, precision);
     result = value*operateur;
@@ -43,13 +45,15 @@ var numberRounder = function(value, precision){
 
 //Vérifie le contenu des champs du formulaire à l'aide de regex
 var formRegex = function(id){
-    const lettersRegex = /[A-Za-zéèêàùçîï\-\\\s]{1,}/;
-    const adresseRegex = /[0-9A-Za-zéèêàùçîï\-\\\s\,\.]{2,}/;
+    const lettersRegex = /[A-Za-zéèêàùçîï\s\-]{1,}/; //Autorise les lettres, accent compris, espaces, tirets
+    const adresseRegex = /[0-9A-Za-zéèêàùçîï\-\s\,\.]{2,}/; //Autorise les lettres, accent compris, chiffres, espaces, tirets
     const mailRegex = /^[a-z0-9][0-9a-z\-\_\.]{2,}[a-z0-9]@[a-z0-9]{1}[0-9a-z\-]{1,}[a-z0-9].[a-z]{2,6}$/;
+    //Autorise les chaînes de caractère correspondant à un email
     var retour = false;
     const input = document.getElementById(id);
     const attribute = input.getAttribute('name');
     const content = input.value;
+    //définit le regex à utiliser en fonction de la chaîne contrôlée.
     switch (attribute){
         case 'name':
         case 'surName':
@@ -75,6 +79,8 @@ var formRegex = function(id){
 }
 
 //Vérifie si toutes les valeurs des champs du formulaire sont valides
+//Récupère les valeurs de l'array formListenersAnswers et les additionne
+//Si le total est égal à la longueur du tableau, retourne true
 var formAnswers = function(){
     var total = 0;
     for(let count in formListenersAnswers){
@@ -90,15 +96,19 @@ var formAnswers = function(){
 //Met en avant la validité ou l'invalidité d'un champ du formulaire
 var formAssist = function(input, regexReturn){
     var value, label, labelClass;
+    //récupère l'élément label associété à l'élément input
     const labelArray = document.getElementsByTagName('label');
     for(let count in labelArray){
-        console.log(labelArray[count]);
         if(HTMLCollectionCleaner(count) && labelArray[count].getAttribute('for') == input.getAttribute('name')){
             label = labelArray[count];
+        }else{
+            console.log('Aucun label retourné');
         }
     }
+    //récupère les valeurs standards de la classe des labels et input du formulaire avant une éventuelle modificiation de celles-ci
     labelClass = labelClassValues.get(label.getAttribute('for'));
     value = inputClassValues.get(input.getAttribute('name'));
+    //si regexReturn vaut true, le code couleur appliqué correspond à success (bootstrap), sinon à danger
     if(regexReturn){
         value += ' border border-success text-success';
         labelClass += ' text-success';
@@ -106,6 +116,7 @@ var formAssist = function(input, regexReturn){
         value += ' border border-danger text-danger';
         labelClass += ' text-danger';
     }
+    //attribue les nouvelles classes aux éléments label et input
     input.setAttribute('class', value);
     label.setAttribute('class', labelClass);
 }

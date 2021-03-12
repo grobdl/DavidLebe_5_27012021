@@ -4,7 +4,6 @@
 const shoppingCart = new cart();
 //objets utilisés pour la construction des cartes
 if(localStorage.getItem('cart')){
-    console.log('localStorage existe');
     localStorageParser();
 }else{
     shoppingCart.orderMap = orderMap;

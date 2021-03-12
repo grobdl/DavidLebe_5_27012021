@@ -2,6 +2,7 @@
 var cartObject = function(){
     shippingCartInfos = document.forms[0];
     const shippingCartForm = new contact();
+    // En fonction de la valeur du paramètre name, le contenu de l'input est transféré dans la propriété concernée de l'objet
     for(let i in shippingCartInfos){
         if(shippingCartInfos[i]){
             switch(shippingCartInfos[i].name){
@@ -28,6 +29,7 @@ var cartObject = function(){
             }
         }
     }
+    //retourne l'objet contact
     return shippingCartForm;
 }
 
