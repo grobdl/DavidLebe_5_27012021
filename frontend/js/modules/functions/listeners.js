@@ -35,9 +35,12 @@ var listenOperateButton = function(){
         case 'product':
             //Ecoute du bouton de retour vers index.html
             const returnButton = document.getElementsByClassName(backToIndexClass);
-            returnButton[0].addEventListener('click', function(){
+            if(returnButton[0]){
+                returnButton[0].addEventListener('click', function(){
                 window.location.href = 'index.html';
             })
+            }
+            
         break;
     }
 }
@@ -122,11 +125,14 @@ var formListeners = function(){
                         formAssist(formInputs[count], true);
                     }else{
                         //le contenu est invalide, l'encadré devient rouge
+                        formListenersAnswers[count] = 0;
                         formAssist(formInputs[count], false);
                     }
                     //Vérifie que le bouton ne peut être cliqué que si le panier n'est pas vide et tous les inputs valides
                     if(formAnswers() && shoppingCart.orderMap.size > 0){
                         document.getElementById('formValidate').removeAttribute('disabled');
+                    }else{
+                        document.getElementById('formValidate').setAttribute('disabled', 'true');
                     }
                 });
             }

@@ -20,5 +20,4 @@ var localStorageParser = function(){
             shoppingCart[property] = parse[property];
         }
     localStorage.clear();
-    console.log('localStorage a été effacé');
 }

@@ -101,7 +101,7 @@ var contentBuilder = function(product, position, idPageValue){
             break;
 
             case 'imageURL':
-            const productImage = new cardElement('img', [['class', productImageClass], ['src', product.imageURL]], '', articleClass);
+            const productImage = new cardElement('img', [['class', productImageClass], ['src', product.imageURL], ['alt', product.name]], '', articleClass);
             elementBuilder(productImage, position, idPageValue);
             break;
 
